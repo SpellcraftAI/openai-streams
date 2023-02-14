@@ -1,0 +1,41 @@
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    
+    "no-console": "error",
+    "no-trailing-spaces": "error",
+    "max-len": [1, 80, 2, {
+      "ignorePattern": "^import\\s.+\\sfrom\\s.+;$",
+      "ignoreUrls": true,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true,
+      "ignoreRegExpLiterals": true
+    }],
+
+    "@typescript-eslint/type-annotation-spacing": ["error"],
+
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-nocheck": "allow-with-description",
+        "ts-ignore": "allow-with-description"
+      }
+    ],
+
+    "indent": "off",
+    "@typescript-eslint/indent": ["error", 2],
+
+    "semi": "off",
+    "@typescript-eslint/semi": ["error", "always"],
+
+    "quotes": "off",
+    "@typescript-eslint/quotes": ["error", "double"],
+
+    "object-curly-spacing": "off",
+    "@typescript-eslint/object-curly-spacing": ["error", "always"]
+  }
+}

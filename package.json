@@ -1,0 +1,36 @@
+{
+  "name": "openai-ts",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "platform": "node",
+  "engines": {
+    "node": ">=14"
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": "./dist/index.js",
+    "./*": "./dist/*/index.js"
+  },
+  "scripts": {
+    "dev": "tsmodule dev",
+    "build": "tsmodule build",
+    "test": "ava",
+    "pretest": "yarn build",
+    "prepublishOnly": "yarn test",
+    "lint": "eslint src --fix"
+  },
+  "devDependencies": {
+    "@tsmodule/tsmodule": "^41.28.0",
+    "@types/node": "^18.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "ava": "^5.2.0",
+    "eslint": "^8.34.0",
+    "typescript": "^4.9.5"
+  }
+}
