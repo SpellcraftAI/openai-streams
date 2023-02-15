@@ -19,6 +19,8 @@
   },
   "scripts": {
     "dev": "tsmodule dev",
+    "docs": "yarn typedoc src",
+    "prebuild": "yarn docs",
     "build": "tsmodule build",
     "test": "ava",
     "pretest": "yarn build",
@@ -33,6 +35,7 @@
     "ava": "^5.2.0",
     "eslint": "^8.34.0",
     "openai": "^3.1.0",
+    "typedoc": "^0.23.25",
     "typescript": "^4.9.5"
   },
   "dependencies": {
