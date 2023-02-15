@@ -5,7 +5,7 @@
 This library returns OpenAI API responses as streams only. Non-stream endpoints
 like `edits` etc. are simply a stream with only one chunk update. 
 
-Overall, it simplifies the following:
+It simplifies the following:
 
 1. Prioritizing streaming and type inference.
 2. Auto-loads `OPENAI_API_KEY` from `process.env`.
