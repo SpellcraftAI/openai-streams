@@ -1,7 +1,7 @@
 {
   "name": "openai-streams",
   "description": "Streams-first OpenAI API client, written in TypeScript.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "type": "module",
   "platform": "node",
@@ -45,5 +45,6 @@
     "openai-ts",
     "streams",
     "gpt-3"
-  ]
+  ],
+  "homepage": "https://github.com/gptlabs/openai-streams"
 }
