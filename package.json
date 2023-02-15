@@ -6,7 +6,7 @@
   "type": "module",
   "platform": "node",
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "types": "dist/index.d.ts",
   "files": [
