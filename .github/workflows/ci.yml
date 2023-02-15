@@ -36,3 +36,5 @@ jobs:
 
     - name: Test
       run: yarn test
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
