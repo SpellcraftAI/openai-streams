@@ -1638,6 +1638,11 @@ shiki@^0.14.1:
     vscode-oniguruma "^1.7.0"
     vscode-textmate "^8.0.0"
 
+shim-streams@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/shim-streams/-/shim-streams-0.0.2.tgz#816a9faf9bc158cbc57b5593f2d4c3c9087b02e6"
+  integrity sha512-9Otb+FCl13XxRp1nVddtsCbwvB7AEMTjzc3/fixowyzvSVoCzu/VEstblB2SdIDbd61u5D/zpS5u9fGzDdOoZg==
+
 signal-exit@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
@@ -1810,6 +1815,11 @@ vscode-textmate@^8.0.0:
   resolved "https://registry.yarnpkg.com/vscode-textmate/-/vscode-textmate-8.0.0.tgz#2c7a3b1163ef0441097e0b5d6389cd5504b59e5d"
   integrity sha512-AFbieoL7a5LMqcnOF04ji+rpXadgOXnZsxQr//r83kLPr7biP7am3g9zbaZIaBGwBRWeSvoMD4mgPdX3e4NWBg==
 
+web-streams-polyfill@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz#71c2718c52b45fd49dbeee88634b3a60ceab42a6"
+  integrity sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==
+
 well-known-symbols@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/well-known-symbols/-/well-known-symbols-2.0.0.tgz#e9c7c07dbd132b7b84212c8174391ec1f9871ba5"
@@ -1877,10 +1887,13 @@ yargs@^17.6.2:
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
 
-yield-stream@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/yield-stream/-/yield-stream-1.0.0.tgz#c2097c814259b8f080dd34cd589476e38ea78cd9"
-  integrity sha512-eSYu6Jjo+xwgsCJeLekuAYDDSFDQf0WS7Fy1hHKyRstXUmcyp+gE40aorZhJzow32Dgz0qfQvPsFOgN4SJUpVA==
+yield-stream@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/yield-stream/-/yield-stream-2.0.3.tgz#d5dca978874e2402bc7a3c22ac064feeae51c2c8"
+  integrity sha512-zODCc/G2JwOyqlYnlLvT/2NOvREbxW3F67eZJaCBjRw07d1G90jP4WsQVTFFestZ0VpC23iZi9Jfz3Vm5u9Enw==
+  dependencies:
+    shim-streams "^0.0.2"
+    web-streams-polyfill "^3.2.1"
 
 yocto-queue@^0.1.0:
   version "0.1.0"
