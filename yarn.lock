@@ -1887,10 +1887,10 @@ yargs@^17.6.2:
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
 
-yield-stream@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/yield-stream/-/yield-stream-2.0.3.tgz#d5dca978874e2402bc7a3c22ac064feeae51c2c8"
-  integrity sha512-zODCc/G2JwOyqlYnlLvT/2NOvREbxW3F67eZJaCBjRw07d1G90jP4WsQVTFFestZ0VpC23iZi9Jfz3Vm5u9Enw==
+yield-stream@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/yield-stream/-/yield-stream-2.0.4.tgz#d8e4dd620114214abf63a308a2b42586d9b3b4ad"
+  integrity sha512-v+E/99dPqq4tveNPIdpOBfrVji//9BOSHOtfW58/zf8aIceevtIdHCTS4YqywQfVdW9wglV2P0oJtlx+jG/ZKw==
   dependencies:
     shim-streams "^0.0.2"
     web-streams-polyfill "^3.2.1"

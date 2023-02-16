@@ -1,7 +1,7 @@
 {
   "name": "openai-streams",
   "description": "Streams-first OpenAI API client, written in TypeScript.",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license": "MIT",
   "type": "module",
   "platform": "node",
@@ -41,7 +41,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "eventsource-parser": "^0.1.0",
-    "yield-stream": "^2.0.3"
+    "yield-stream": "^2.0.4"
   },
   "keywords": [
     "openai",
