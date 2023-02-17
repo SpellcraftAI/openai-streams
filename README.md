@@ -1,6 +1,7 @@
 # OpenAI Streams
 
-[**Github**](https://github.com/gptlabs/openai-streams)
+[**Github**](https://github.com/gptlabs/openai-streams) |
+[**NPM**](https://npmjs.com/package/nextjs-openai) |
 [**Docs**](https://openai-streams.vercel.app)
 
 This library returns OpenAI API responses as streams only. Non-stream endpoints
