@@ -1,6 +1,7 @@
 # OpenAI Streams
 
-- **Docs: https://openai-streams.vercel.app**
+<sub>[**Github**](https://github.com/gptlabs/openai-streams)</sub>
+<sub>[**Docs**](https://openai-streams.vercel.app)</sub>
 
 This library returns OpenAI API responses as streams only. Non-stream endpoints
 like `edits` etc. are simply a stream with only one chunk update. 
