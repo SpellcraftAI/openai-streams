@@ -24,11 +24,10 @@ export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
 
 export type OpenAIOptions = {
   /**
-   * The name of the environment variable that contains the OpenAI API key. We
-   * will not let you pass a raw string, only the name to read from process.env,
-   * e.g. `"MY_SECRET_KEY"` will read from `process.env.MY_SECRET_KEY`.
+   * By default, the API key is read from the OPENAI_API_KEY environment
+   * variable. You can override this by passing a different key here.
    */
-  envKey?: string;
+  apiKey?: string;
   /**
    * Whether to return tokens or raw events.
    */

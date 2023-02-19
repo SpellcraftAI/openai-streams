@@ -13,12 +13,11 @@ export const OpenAI: OpenAIAPI = async (
   args,
   {
     mode = "tokens",
-    envKey = "OPENAI_API_KEY",
+    apiKey = process.env.OPENAI_API_KEY,
   } = {}
 ) => {
-  const SECRET = process.env[envKey];
-  if (!SECRET) {
-    throw new Error(`No OpenAI API key found in ${envKey}.`);
+  if (!apiKey) {
+    throw new Error("No API key provided. Please set the OPENAI_API_KEY environment variable or pass the { apiKey } option.");
   }
 
   const stream = endpoint === "completions";
@@ -31,7 +30,7 @@ export const OpenAI: OpenAIAPI = async (
         stream: stream ? true : undefined,
       }),
       headers: {
-        Authorization: `Bearer ${SECRET}`,
+        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
