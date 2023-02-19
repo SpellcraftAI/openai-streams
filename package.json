@@ -1,7 +1,7 @@
 {
   "name": "openai-streams",
   "description": "Streams-first OpenAI API client, written in TypeScript.",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "license": "MIT",
   "type": "module",
   "platform": "node",
