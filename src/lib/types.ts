@@ -1,4 +1,4 @@
-import { CreateCompletionRequest, CreateEditRequest, CreateEmbeddingRequest, CreateFineTuneRequest, CreateImageRequest } from "./pinned";
+import type { CreateCompletionRequest, CreateEditRequest, CreateEmbeddingRequest, CreateFineTuneRequest, CreateImageRequest } from "./pinned";
 
 export type StreamMode = "raw" | "tokens";
 
