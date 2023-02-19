@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * OpenAI API APIs for sampling from and fine-tuning language models
  *

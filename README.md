@@ -29,9 +29,19 @@ npm i --save openai-streams
 
 ### Usage
 
-1. **Set the `OPENAI_API_KEY` env variable.**
+1. **Set the `OPENAI_API_KEY` env variable** (or pass the `{ envKey }` option).
 
-   The runtime will throw if it cannot find an API key.
+   The library will throw if it cannot find an API key. Your program will load
+   this at runtime from `process.env.OPENAI_API_KEY` by default, but you may
+   override which environment variable is loaded with the `envKey` option.
+
+   ```ts
+   await OpenAI(
+     "completions", 
+     {/* ... */}, 
+     { envKey: "MY_SECRET_OPENAI_KEY" }
+   )
+   ```
 
 2. **Call the API via `await OpenAI(endpoint, params)`.**
 

@@ -1,18 +1,26 @@
 /* eslint-disable no-console */
 import { streamArray } from "yield-stream";
-import { ENCODER, OPENAI_API_KEY } from "../../globs";
+import { ENCODER } from "../../globs";
 import { EventStream, TokenStream } from "../streaming";
-import { OpenAIAPIEndpoint, OpenAICreateArgs, OpenAIAPI } from "../types";
+import { OpenAIAPI } from "../types";
 
 /**
  * Create a new completion stream. Stream of strings by default, set `mode:
  * 'raw'` for the raw stream of JSON objects.
  */
-export const OpenAI: OpenAIAPI = async <T extends OpenAIAPIEndpoint>(
-  endpoint: T,
-  args: OpenAICreateArgs<T>,
-  mode = "tokens"
+export const OpenAI: OpenAIAPI = async (
+  endpoint,
+  args,
+  {
+    mode = "tokens",
+    envKey = "OPENAI_API_KEY",
+  } = {}
 ) => {
+  const SECRET = process.env[envKey];
+  if (!SECRET) {
+    throw new Error(`No OpenAI API key found in ${envKey}.`);
+  }
+
   const stream = endpoint === "completions";
   const response = await fetch(
     `https://api.openai.com/v1/${endpoint}`,
@@ -23,7 +31,7 @@ export const OpenAI: OpenAIAPI = async <T extends OpenAIAPIEndpoint>(
         stream: stream ? true : undefined,
       }),
       headers: {
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        Authorization: `Bearer ${SECRET}`,
         "Content-Type": "application/json",
         "Accept": "application/json",
       },

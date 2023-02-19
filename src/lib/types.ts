@@ -22,10 +22,23 @@ export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
             ? CreateFineTuneRequest
             : never;
 
+export type OpenAIOptions = {
+  /**
+   * The name of the environment variable that contains the OpenAI API key. We
+   * will not let you pass a raw string, only the name to read from process.env,
+   * e.g. `"MY_SECRET_KEY"` will read from `process.env.MY_SECRET_KEY`.
+   */
+  envKey?: string;
+  /**
+   * Whether to return tokens or raw events.
+   */
+  mode?: StreamMode;
+};
+
 export type OpenAIAPI = <T extends OpenAIAPIEndpoint>(
   endpoint: T,
   args: OpenAICreateArgs<T>,
-  mode?: StreamMode
+  options?: OpenAIOptions
 ) => Promise<ReadableStream<Uint8Array>>;
 
 export * from "./pinned";
