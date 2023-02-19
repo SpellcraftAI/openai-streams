@@ -73,6 +73,10 @@ export default async function test() {
 }
 ```
 
+<sub>Run the example: See
+[`src/pages/api/demo.ts`](https://github.com/gptlabs/nextjs-openai/blob/master/src/pages/api/demo.ts)
+in `nextjs-openai`.</sub>
+
 ### Notes
 
 1. Internally, streams are often manipulated using generators via `for await
