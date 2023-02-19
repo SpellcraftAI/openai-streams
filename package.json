@@ -34,7 +34,6 @@
     "@typescript-eslint/parser": "^5.52.0",
     "ava": "^5.2.0",
     "eslint": "^8.34.0",
-    "openai": "^3.1.0",
     "typedoc": "^0.23.25",
     "typescript": "^4.9.5"
   },
@@ -45,7 +44,7 @@
   },
   "keywords": [
     "openai",
-    "openai-ts",
+    "typescript",
     "streams",
     "gpt-3"
   ],

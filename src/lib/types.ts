@@ -1,4 +1,4 @@
-import type { CreateCompletionRequest, CreateEditRequest, CreateEmbeddingRequest, CreateFineTuneRequest, CreateImageRequest } from "openai";
+import { CreateCompletionRequest, CreateEditRequest, CreateEmbeddingRequest, CreateFineTuneRequest, CreateImageRequest } from "./pinned";
 
 export type StreamMode = "raw" | "tokens";
 
@@ -28,10 +28,4 @@ export type OpenAIAPI = <T extends OpenAIAPIEndpoint>(
   mode?: StreamMode
 ) => Promise<ReadableStream<Uint8Array>>;
 
-export type {
-  CreateCompletionRequest,
-  CreateEditRequest,
-  CreateEmbeddingRequest,
-  CreateFineTuneRequest,
-  CreateImageRequest,
-} from "openai";
+export * from "./pinned";
