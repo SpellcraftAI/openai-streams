@@ -17,11 +17,21 @@ It simplifies the following:
 Overall, the library aims to make it as simple to call the API as possible and
 stream updates in.
 
+### Installation
+
+```bash
+yarn add openai-streams
+
+# or
+
+npm i --save openai-streams
+```
+
 ### Usage
 
 1. **Set the `OPENAI_API_KEY` env variable.**
 
-   The runtime will throw if this is not available.
+   The runtime will throw if it cannot find an API key.
 
 2. **Call the API via `await OpenAI(endpoint, params)`.**
 
@@ -32,6 +42,8 @@ stream updates in.
 #### Example: Consuming streams in Next.js Edge functions
 
 ```ts
+import { OpenAI } from "openai-streams";
+
 export default async function test() {
   const stream = await OpenAI(
     "completions",
@@ -40,6 +52,7 @@ export default async function test() {
       prompt: "Write a two-sentence paragraph.\n\n",
       temperature: 1,
       max_tokens: 100,
+      // apiKey: "abc123",
     },
   );
 
