@@ -11,7 +11,7 @@ export type OpenAIAPIEndpoint =
 
 export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
   T extends "completions"
-    ? Exclude<CreateCompletionRequest, "stream">
+    ? Omit<CreateCompletionRequest, "stream">
     : T extends "edits"
       ? CreateEditRequest
       : T extends "embeddings"
