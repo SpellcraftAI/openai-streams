@@ -41,7 +41,7 @@ npm i --save openai-streams
    ```ts
    await OpenAI(
      "completions", 
-     {/* ... */}, 
+     {/* params */}, 
      { apiKey: process.env.MY_SECRET_API_KEY }
    )
    ```
@@ -57,23 +57,27 @@ npm i --save openai-streams
 ```ts
 import { OpenAI } from "openai-streams";
 
-export default async function test() {
+export default async function handler() {
   const stream = await OpenAI(
     "completions",
     {
       model: "text-davinci-003",
-      prompt: "Write a two-sentence paragraph.\n\n",
-      temperature: 1,
-      max_tokens: 100,
-      // apiKey: "abc123",
+      prompt: "Write a sentence.\n\n",
+      max_tokens: 100
     },
   );
 
-  return new Response(completionsStream);
+  return new Response(stream);
 }
+
+export const config = {
+  runtime: "edge"
+};
 ```
 
-<sub>Run the example: See
+<sub>See the example in
+[`example/src/pages/api/hello.ts`](https://github.com/gptlabs/openai-streams/blob/master/src/pages/api/hello.ts).</sub>
+<sub>See also
 [`src/pages/api/demo.ts`](https://github.com/gptlabs/nextjs-openai/blob/master/src/pages/api/demo.ts)
 in `nextjs-openai`.</sub>
 
