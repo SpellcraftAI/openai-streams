@@ -7,17 +7,17 @@
 This library returns OpenAI API responses as streams only. Non-stream endpoints
 like `edits` etc. are simply a stream with only one chunk update.
 
-Now supports WHATWG *and* Node.js streams for full Next.js API Route support.
+Now supports WHATWG *and* Node.js streams in order to provide full support for
+all Next.js API Routes.
 
-It simplifies the following:
-
-1. Prioritizing streaming and type inference.
-2. Auto-loads `OPENAI_API_KEY` from `process.env`.
-3. Uses the same function for all endpoints, and switches the type based on the
+- Prioritizes streams, so you can display a completion as it arrives.
+- Auto-loads `OPENAI_API_KEY` from `process.env`.
+- Uses the same function for all endpoints, and switches the type based on the
    `OpenAI(endpoint, ...)` signature.
 
 Overall, the library aims to make it as simple to call the API as possible and
-stream updates in.
+get access to a `ReadableStream` (or `NodeJS.Readable` from
+`openai-streams/node`).
 
 ### Installation
 
