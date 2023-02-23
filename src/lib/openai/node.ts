@@ -1,7 +1,7 @@
 import { Readable } from "stream";
 import { yieldStream } from "yield-stream";
 import { OpenAINodeClient } from "../types";
-import { OpenAI } from "./edge";
+import { OpenAI as OpenAIEdge } from "./edge";
 
 /**
  * A Node.js client for OpenAI's API, using NodeJS.Readable.
@@ -9,12 +9,12 @@ import { OpenAI } from "./edge";
  *  Create a new completion stream. Stream of strings by default, set `mode:
  * 'raw'` for the raw stream of JSON objects.
  */
-export const OpenAINode: OpenAINodeClient = async (
+export const OpenAI: OpenAINodeClient = async (
   endpoint,
   args,
   options,
 ) => {
-  const stream = await OpenAI(endpoint, args, options);
+  const stream = await OpenAIEdge(endpoint, args, options);
   const nodeStream = Readable.from(yieldStream(stream));
 
   return nodeStream;
