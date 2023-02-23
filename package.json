@@ -1,7 +1,7 @@
 {
   "name": "openai-streams",
   "description": "Tools for working with OpenAI streams in Node.js and TypeScript.",
-  "version": "1.0.22-canary.6",
+  "version": "1.0.22-canary.7",
   "license": "MIT",
   "type": "module",
   "platform": "node",
@@ -10,7 +10,9 @@
   },
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "edge.js",
+    "edge.d.ts"
   ],
   "exports": {
     "./package.json": "./package.json",
