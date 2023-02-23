@@ -12,6 +12,9 @@ like `edits` etc. are simply a stream with only one chunk update.
 - One single function with inferred parameter type based on the endpoint you
   provide.
 
+Uses `ReadableStream` by default for browser, Edge Runtime, and Node 18+, with
+a `NodeJS.Readable` version available at `openai-streams/node`.
+
 ### Installation
 
 ```bash
@@ -70,7 +73,7 @@ export const config = {
 ```
 
 
-### Node: Consuming streams in Next.js API Route (Node)
+#### Node: Consuming streams in Next.js API Route (Node)
 
 If you cannot use an Edge runtime or want to consume Node.js streams for another
 reason, use `openai-streams/node`:
