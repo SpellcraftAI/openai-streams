@@ -37,20 +37,15 @@ export type OpenAIOptions = {
 /**
  * The OpenAI API client for Edge runtime.
  */
-export type OpenAIEdge = (
+export type OpenAIEdgeClient = (
   <T extends OpenAIAPIEndpoint>(
     endpoint: T,
     args: OpenAICreateArgs<T>,
     options?: OpenAIOptions
   ) => Promise<ReadableStream<Uint8Array>>
-) & {
-  /**
-   * The OpenAI API client for Node.js runtime.
-   */
-  Node: OpenAINode;
-};
+);
 
-export type OpenAINode = <T extends OpenAIAPIEndpoint>(
+export type OpenAINodeClient = <T extends OpenAIAPIEndpoint>(
   endpoint: T,
   args: OpenAICreateArgs<T>,
   options?: OpenAIOptions

@@ -1,14 +1,16 @@
 /* eslint-disable no-console */
-import { streamArray, yieldStream } from "yield-stream";
+import { streamArray } from "yield-stream";
 import { ENCODER } from "../../globs/shared";
 import { EventStream, TokenStream } from "../streaming";
-import { OpenAIEdge } from "../types";
+import { OpenAIEdgeClient } from "../types";
 
 /**
+ * OpenAI Edge client.
+ *
  * Create a new completion stream. Stream of strings by default, set `mode:
  * 'raw'` for the raw stream of JSON objects.
  */
-export const OpenAI: OpenAIEdge = async (
+export const OpenAI: OpenAIEdgeClient = async (
   endpoint,
   args,
   {
@@ -75,16 +77,4 @@ export const OpenAI: OpenAIEdge = async (
     default:
       throw new Error(`Invalid mode: ${mode}`);
   }
-};
-
-OpenAI.Node = async (
-  endpoint,
-  args,
-  options,
-) => {
-  const { Readable } = await import("stream");
-  const stream = await OpenAI(endpoint, args, options);
-  const nodeStream = Readable.from(yieldStream(stream));
-
-  return nodeStream;
 };
