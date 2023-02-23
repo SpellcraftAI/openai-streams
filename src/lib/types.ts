@@ -34,10 +34,16 @@ export type OpenAIOptions = {
   mode?: StreamMode;
 };
 
-export type OpenAIAPI = <T extends OpenAIAPIEndpoint>(
+export type OpenAIEdge = <T extends OpenAIAPIEndpoint>(
   endpoint: T,
   args: OpenAICreateArgs<T>,
   options?: OpenAIOptions
 ) => Promise<ReadableStream<Uint8Array>>;
+
+export type OpenAINode = <T extends OpenAIAPIEndpoint>(
+  endpoint: T,
+  args: OpenAICreateArgs<T>,
+  options?: OpenAIOptions
+) => Promise<NodeJS.ReadableStream>;
 
 export * from "./pinned";
