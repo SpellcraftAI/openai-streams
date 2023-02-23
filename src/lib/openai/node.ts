@@ -1,3 +1,4 @@
+import { Readable } from "stream";
 import { yieldStream } from "yield-stream";
 import { OpenAINodeClient } from "../types";
 import { OpenAI } from "./edge";
@@ -13,7 +14,6 @@ export const OpenAINode: OpenAINodeClient = async (
   args,
   options,
 ) => {
-  const { Readable } = await import("stream");
   const stream = await OpenAI(endpoint, args, options);
   const nodeStream = Readable.from(yieldStream(stream));
 
