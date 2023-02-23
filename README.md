@@ -5,7 +5,9 @@
 [**Docs**](https://openai-streams.vercel.app)
 
 This library returns OpenAI API responses as streams only. Non-stream endpoints
-like `edits` etc. are simply a stream with only one chunk update. 
+like `edits` etc. are simply a stream with only one chunk update.
+
+Now supports WHATWG *and* Node.js streams via `OpenAI()` and `OpenAI.Node()`.
 
 It simplifies the following:
 
@@ -51,6 +53,24 @@ npm i --save openai-streams
    The `params` type will be inferred based on the `endpoint` you provide, i.e.
    for the `"edits"` endpoint, `import('openai').CreateEditRequest` will be
    enforced.
+
+### Example: Consuming streams using Next.js API Route (Node)
+```ts
+import { OpenAI } from "openai-streams";
+
+export default async function handler() {
+  const stream = await OpenAI.Node(
+    "completions",
+    {
+      model: "text-davinci-003",
+      prompt: "Write a sentence.\n\n",
+      max_tokens: 100
+    },
+  );
+
+  stream.pipe(res);
+}
+```
 
 #### Example: Consuming streams in Next.js Edge functions
 

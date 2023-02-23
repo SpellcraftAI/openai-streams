@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { streamArray } from "yield-stream";
+import { streamArray, yieldStream } from "yield-stream";
 import { ENCODER } from "../../globs/shared";
 import { EventStream, TokenStream } from "../streaming";
 import { OpenAIEdge } from "../types";
@@ -75,4 +75,16 @@ export const OpenAI: OpenAIEdge = async (
     default:
       throw new Error(`Invalid mode: ${mode}`);
   }
+};
+
+OpenAI.Node = async (
+  endpoint,
+  args,
+  options,
+) => {
+  const { Readable } = await import("stream");
+  const stream = await OpenAI(endpoint, args, options);
+  const nodeStream = Readable.from(yieldStream(stream));
+
+  return nodeStream;
 };
