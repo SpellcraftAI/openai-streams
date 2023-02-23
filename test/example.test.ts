@@ -1,8 +1,8 @@
 import "./env";
 import test from "ava";
-import { OpenAI } from "../src/lib";
+import { OpenAI } from "../src";
 import { yieldStream } from "yield-stream";
-import { DECODER } from "../src/globs";
+import { DECODER } from "../src/globs/shared";
 
 test("'completions' endpoint", async (t) => {
   const result = await OpenAI(

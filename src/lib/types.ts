@@ -34,10 +34,21 @@ export type OpenAIOptions = {
   mode?: StreamMode;
 };
 
-export type OpenAIAPI = <T extends OpenAIAPIEndpoint>(
+/**
+ * The OpenAI API client for Edge runtime.
+ */
+export type OpenAIEdgeClient = (
+  <T extends OpenAIAPIEndpoint>(
+    endpoint: T,
+    args: OpenAICreateArgs<T>,
+    options?: OpenAIOptions
+  ) => Promise<ReadableStream<Uint8Array>>
+);
+
+export type OpenAINodeClient = <T extends OpenAIAPIEndpoint>(
   endpoint: T,
   args: OpenAICreateArgs<T>,
   options?: OpenAIOptions
-) => Promise<ReadableStream<Uint8Array>>;
+) => Promise<NodeJS.ReadableStream>;
 
 export * from "./pinned";

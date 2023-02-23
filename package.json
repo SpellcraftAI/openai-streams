@@ -1,7 +1,7 @@
 {
   "name": "openai-streams",
   "description": "Tools for working with OpenAI streams in Node.js and TypeScript.",
-  "version": "1.0.21",
+  "version": "2.0.1",
   "license": "MIT",
   "type": "module",
   "platform": "node",
@@ -10,18 +10,22 @@
   },
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "node.js",
+    "node.d.ts"
   ],
   "exports": {
     "./package.json": "./package.json",
+    "./node": "./node.js",
     ".": "./dist/index.js",
     "./*": "./dist/*/index.js"
   },
   "scripts": {
+    "canary": "yarn build && yarn version --prerelease --preid=canary && npm publish --tag canary",
     "dev": "tsmodule dev",
     "docs": "yarn typedoc src",
-    "prebuild": "yarn docs",
     "build": "tsmodule build",
+    "postbuild": "yarn docs",
     "test": "ava",
     "pretest": "yarn build",
     "prepublishOnly": "yarn test",

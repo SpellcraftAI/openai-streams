@@ -5,25 +5,25 @@
 [**Docs**](https://openai-streams.vercel.app)
 
 This library returns OpenAI API responses as streams only. Non-stream endpoints
-like `edits` etc. are simply a stream with only one chunk update. 
+like `edits` etc. are simply a stream with only one chunk update.
 
-It simplifies the following:
+Now supports WHATWG *and* Node.js streams in order to provide full support for
+all Next.js API Routes.
 
-1. Prioritizing streaming and type inference.
-2. Auto-loads `OPENAI_API_KEY` from `process.env`.
-3. Uses the same function for all endpoints, and switches the type based on the
+- Prioritizes streams, so you can display a completion as it arrives.
+- Auto-loads `OPENAI_API_KEY` from `process.env`.
+- Uses the same function for all endpoints, and switches the type based on the
    `OpenAI(endpoint, ...)` signature.
 
 Overall, the library aims to make it as simple to call the API as possible and
-stream updates in.
+get access to a `ReadableStream` (or `NodeJS.Readable` from
+`openai-streams/node`).
 
 ### Installation
 
 ```bash
 yarn add openai-streams
-
-# or
-
+# -or-
 npm i --save openai-streams
 ```
 
@@ -52,7 +52,8 @@ npm i --save openai-streams
    for the `"edits"` endpoint, `import('openai').CreateEditRequest` will be
    enforced.
 
-#### Example: Consuming streams in Next.js Edge functions
+
+#### Edge/Browser: Consuming streams in Next.js Edge functions
 
 ```ts
 import { OpenAI } from "openai-streams";
@@ -62,7 +63,7 @@ export default async function handler() {
     "completions",
     {
       model: "text-davinci-003",
-      prompt: "Write a sentence.\n\n",
+      prompt: "Write a happy sentence.\n\n",
       max_tokens: 100
     },
   );
@@ -74,6 +75,31 @@ export const config = {
   runtime: "edge"
 };
 ```
+
+
+### Node: Consuming streams in Next.js API Route (Node)
+
+If you cannot use an Edge runtime or want to consume Node.js streams for another
+reason, use `openai-streams/node`:
+
+```ts
+import type { NextApiRequest, NextApiResponse } from "next";
+import { OpenAI } from "openai-streams/node";
+
+export default async function test (_: NextApiRequest, res: NextApiResponse) {
+  const stream = await OpenAI(
+    "completions",
+    {
+      model: "text-davinci-003",
+      prompt: "Write a happy sentence.\n\n",
+      max_tokens: 25
+    }
+  );
+
+  stream.pipe(res);
+}
+```
+
 
 <sub>See the example in
 [`example/src/pages/api/hello.ts`](https://github.com/gptlabs/openai-streams/blob/master/src/pages/api/hello.ts).</sub>
