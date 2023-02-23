@@ -63,7 +63,7 @@ export default async function handler() {
     "completions",
     {
       model: "text-davinci-003",
-      prompt: "Write a sentence.\n\n",
+      prompt: "Write a happy sentence.\n\n",
       max_tokens: 100
     },
   );
@@ -83,16 +83,17 @@ If you cannot use an Edge runtime or want to consume Node.js streams for another
 reason, use `openai-streams/node`:
 
 ```ts
+import type { NextApiRequest, NextApiResponse } from "next";
 import { OpenAI } from "openai-streams/node";
 
-export default async function handler() {
+export default async function test (_: NextApiRequest, res: NextApiResponse) {
   const stream = await OpenAI(
     "completions",
     {
       model: "text-davinci-003",
-      prompt: "Write a sentence.\n\n",
-      max_tokens: 100
-    },
+      prompt: "Write a happy sentence.\n\n",
+      max_tokens: 25
+    }
   );
 
   stream.pipe(res);
