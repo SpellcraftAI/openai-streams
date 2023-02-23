@@ -7,7 +7,7 @@
 This library returns OpenAI API responses as streams only. Non-stream endpoints
 like `edits` etc. are simply a stream with only one chunk update.
 
-Now supports WHATWG *and* Node.js streams via `OpenAI()` and `OpenAI.Node()`.
+Now supports WHATWG *and* Node.js streams for full Next.js API Route support.
 
 It simplifies the following:
 
@@ -55,7 +55,7 @@ npm i --save openai-streams
    enforced.
 
 
-#### Example: Consuming streams in Next.js Edge functions
+#### Edge/Browser: Consuming streams in Next.js Edge functions
 
 ```ts
 import { OpenAI } from "openai-streams";
@@ -79,7 +79,7 @@ export const config = {
 ```
 
 
-### Example: Consuming streams using Next.js API Route (Node)
+### Node: Consuming streams in Next.js API Route (Node)
 
 If you cannot use an Edge runtime or want to consume Node.js streams for another
 reason, use `openai-streams/node`:
