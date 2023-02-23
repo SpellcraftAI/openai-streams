@@ -1,6 +1,6 @@
 import "./env";
 import test from "ava";
-import { OpenAI } from "../src";
+import { OpenAI } from "../edge";
 import { yieldStream } from "yield-stream";
 import { DECODER } from "../src/globs/shared";
 
