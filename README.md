@@ -9,8 +9,8 @@ like `edits` etc. are simply a stream with only one chunk update.
 
 - Prioritizes streams, so you can display a completion as it arrives.
 - Auto-loads `OPENAI_API_KEY` from `process.env`.
-- Uses the same function for all endpoints, and switches the type based on the
-   `OpenAI(endpoint, ...)` signature.
+- One single function with inferred parameter type based on the endpoint you
+  provide.
 
 ### Installation
 
