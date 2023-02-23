@@ -54,23 +54,6 @@ npm i --save openai-streams
    for the `"edits"` endpoint, `import('openai').CreateEditRequest` will be
    enforced.
 
-### Example: Consuming streams using Next.js API Route (Node)
-```ts
-import { OpenAI } from "openai-streams";
-
-export default async function handler() {
-  const stream = await OpenAI.Node(
-    "completions",
-    {
-      model: "text-davinci-003",
-      prompt: "Write a sentence.\n\n",
-      max_tokens: 100
-    },
-  );
-
-  stream.pipe(res);
-}
-```
 
 #### Example: Consuming streams in Next.js Edge functions
 
@@ -94,6 +77,30 @@ export const config = {
   runtime: "edge"
 };
 ```
+
+
+### Example: Consuming streams using Next.js API Route (Node)
+
+If you cannot use an Edge runtime or want to consume Node.js streams for another
+reason, use `openai-streams/node`:
+
+```ts
+import { OpenAI } from "openai-streams/node";
+
+export default async function handler() {
+  const stream = await OpenAI(
+    "completions",
+    {
+      model: "text-davinci-003",
+      prompt: "Write a sentence.\n\n",
+      max_tokens: 100
+    },
+  );
+
+  stream.pipe(res);
+}
+```
+
 
 <sub>See the example in
 [`example/src/pages/api/hello.ts`](https://github.com/gptlabs/openai-streams/blob/master/src/pages/api/hello.ts).</sub>

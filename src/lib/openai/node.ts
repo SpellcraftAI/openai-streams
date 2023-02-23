@@ -8,6 +8,8 @@ import { OpenAI as OpenAIEdge } from "./edge";
  *
  *  Create a new completion stream. Stream of strings by default, set `mode:
  * 'raw'` for the raw stream of JSON objects.
+ *
+ * @note Use `openai-streams/edge` for Edge Runtime or Browser.
  */
 export const OpenAI: OpenAINodeClient = async (
   endpoint,
