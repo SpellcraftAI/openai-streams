@@ -23,9 +23,7 @@ stream updates in.
 
 ```bash
 yarn add openai-streams
-
-# or
-
+# -or-
 npm i --save openai-streams
 ```
 
