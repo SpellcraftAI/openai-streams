@@ -1,1 +1,1 @@
-export * from "./dist/lib/openai/node";
+export * from "./dist/lib/openai/node.js";
