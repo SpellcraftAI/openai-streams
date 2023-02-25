@@ -43,15 +43,21 @@ export const OpenAI: OpenAIEdgeClient = async (
     throw new Error("No response body");
   }
 
+  let outputStream: ReadableStream<Uint8Array>;
+
   if (stream) {
     switch (mode) {
       case "tokens":
-        return TokenStream(response.body);
+        outputStream = TokenStream(response.body);
+        break;
       case "raw":
-        return EventStream(response.body);
+        outputStream = EventStream(response.body);
+        break;
       default:
         throw new Error(`Invalid mode: ${mode}`);
     }
+
+    return outputStream.pipeThrough(new TextDecoderStream());
   }
 
   /**
@@ -66,15 +72,20 @@ export const OpenAI: OpenAIEdgeClient = async (
 
       if (typeof text !== "string") {
         console.error("No text choices received from OpenAI: " + stringResult);
-        return streamArray([]);
+        outputStream = streamArray([]);
+        break;
       }
 
       const encoded = ENCODER.encode(text);
-      return streamArray([encoded]);
+      outputStream = streamArray([encoded]);
+      break;
     case "raw":
       const encodedJson = ENCODER.encode(stringResult);
-      return streamArray([encodedJson]);
+      outputStream = streamArray([encodedJson]);
+      break;
     default:
       throw new Error(`Invalid mode: ${mode}`);
   }
+
+  return outputStream.pipeThrough(new TextDecoderStream());
 };
