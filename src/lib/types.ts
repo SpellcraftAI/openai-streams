@@ -42,7 +42,7 @@ export type OpenAIEdgeClient = (
     endpoint: T,
     args: OpenAICreateArgs<T>,
     options?: OpenAIOptions
-  ) => Promise<ReadableStream<string>>
+  ) => Promise<ReadableStream<Uint8Array>>
 );
 
 export type OpenAINodeClient = <T extends OpenAIAPIEndpoint>(

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { generateStream, streamArray, yieldStream } from "yield-stream";
+import { streamArray } from "yield-stream";
 import { ENCODER } from "../../globs/shared";
 import { EventStream, TokenStream } from "../streaming";
 import { OpenAIEdgeClient } from "../types";
@@ -86,15 +86,17 @@ export const OpenAI: OpenAIEdgeClient = async (
     }
   }
 
+  return outputStream;
+
   /**
    * Decode UTF-8 text.
    */
-  return generateStream(
-    async function* () {
-      const DECODER = new TextDecoder();
-      for await (const chunk of yieldStream(outputStream)) {
-        yield DECODER.decode(chunk);
-      }
-    }
-  );
+  // return generateStream(
+  //   async function* () {
+  //     const DECODER = new TextDecoder();
+  //     for await (const chunk of yieldStream(outputStream)) {
+  //       yield DECODER.decode(chunk);
+  //     }
+  //   }
+  // );
 };

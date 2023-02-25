@@ -19,7 +19,7 @@ test("'completions' endpoint", async (t) => {
    */
   const chunks: string[] = [];
   for await (const chunk of yieldStream(result)) {
-    chunks.push(chunk);
+    chunks.push(DECODER.decode(chunk));
     process.stdout.write(chunks.join("").trim());
   }
 
@@ -41,7 +41,7 @@ test("'edits' endpoint", async (t) => {
    */
   const chunks: string[] = [];
   for await (const chunk of yieldStream(result)) {
-    chunks.push(chunk);
+    chunks.push(DECODER.decode(chunk));
     process.stdout.write(chunks.join("").trim());
   }
 
