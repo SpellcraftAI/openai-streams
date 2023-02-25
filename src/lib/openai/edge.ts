@@ -43,6 +43,7 @@ export const OpenAI: OpenAIEdgeClient = async (
     throw new Error("No response body");
   }
 
+  const DECODER_STREAM = new TextDecoderStream();
   let outputStream: ReadableStream<Uint8Array>;
 
   if (stream) {
@@ -57,7 +58,7 @@ export const OpenAI: OpenAIEdgeClient = async (
         throw new Error(`Invalid mode: ${mode}`);
     }
 
-    return outputStream.pipeThrough(new TextDecoderStream());
+    return outputStream.pipeThrough(DECODER_STREAM);
   }
 
   /**
@@ -87,5 +88,5 @@ export const OpenAI: OpenAIEdgeClient = async (
       throw new Error(`Invalid mode: ${mode}`);
   }
 
-  return outputStream.pipeThrough(new TextDecoderStream());
+  return outputStream.pipeThrough(DECODER_STREAM);
 };
