@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { streamArray } from "yield-stream";
+import { generateStream, streamArray, yieldStream } from "yield-stream";
 import { ENCODER } from "../../globs/shared";
 import { EventStream, TokenStream } from "../streaming";
 import { OpenAIEdgeClient } from "../types";
@@ -43,7 +43,7 @@ export const OpenAI: OpenAIEdgeClient = async (
     throw new Error("No response body");
   }
 
-  const DECODER_STREAM = new TextDecoderStream();
+  // const DECODER_STREAM = new TextDecoderStream();
   let outputStream: ReadableStream<Uint8Array>;
 
   if (stream) {
@@ -57,36 +57,44 @@ export const OpenAI: OpenAIEdgeClient = async (
       default:
         throw new Error(`Invalid mode: ${mode}`);
     }
+  } else {
+    /**
+     * Load the response in one shot.
+     */
+    const stringResult = await response.text();
 
-    return outputStream.pipeThrough(DECODER_STREAM);
+    switch (mode) {
+      case "tokens":
+        const json = JSON.parse(stringResult);
+        const { text } = json.choices?.[0] ?? {};
+
+        if (typeof text !== "string") {
+          console.error("No text choices received from OpenAI: " + stringResult);
+          outputStream = streamArray([]);
+          break;
+        }
+
+        const encoded = ENCODER.encode(text);
+        outputStream = streamArray([encoded]);
+        break;
+      case "raw":
+        const encodedJson = ENCODER.encode(stringResult);
+        outputStream = streamArray([encodedJson]);
+        break;
+      default:
+        throw new Error(`Invalid mode: ${mode}`);
+    }
   }
 
   /**
-   * Load the response in one shot.
+   * Decode UTF-8 text.
    */
-  const stringResult = await response.text();
-
-  switch (mode) {
-    case "tokens":
-      const json = JSON.parse(stringResult);
-      const { text } = json.choices?.[0] ?? {};
-
-      if (typeof text !== "string") {
-        console.error("No text choices received from OpenAI: " + stringResult);
-        outputStream = streamArray([]);
-        break;
+  return generateStream(
+    async function* () {
+      const DECODER = new TextDecoder();
+      for await (const chunk of yieldStream(outputStream)) {
+        yield DECODER.decode(chunk);
       }
-
-      const encoded = ENCODER.encode(text);
-      outputStream = streamArray([encoded]);
-      break;
-    case "raw":
-      const encodedJson = ENCODER.encode(stringResult);
-      outputStream = streamArray([encodedJson]);
-      break;
-    default:
-      throw new Error(`Invalid mode: ${mode}`);
-  }
-
-  return outputStream.pipeThrough(DECODER_STREAM);
+    }
+  );
 };
