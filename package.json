@@ -26,8 +26,8 @@
     "docs": "yarn typedoc src",
     "build": "tsmodule build",
     "postbuild": "yarn docs",
-    "test": "ava",
-    "pretest": "yarn build",
+    "test": "yarn build && ava",
+    "retest": "ava",
     "prepublishOnly": "yarn test",
     "lint": "eslint src --fix"
   },

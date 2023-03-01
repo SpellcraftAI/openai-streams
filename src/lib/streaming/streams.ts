@@ -3,6 +3,7 @@ import { TokenParser } from "./transforms";
 
 import { createParser } from "eventsource-parser";
 import { pipeline, yieldStream } from "yield-stream";
+import { OpenAIError } from "../errors";
 
 export type OpenAIStream =
   (stream: ReadableStream<Uint8Array>) => ReadableStream<Uint8Array>;
@@ -30,8 +31,24 @@ export const EventStream: OpenAIStream = (stream) => {
            * Verify we have a valid JSON object and then enqueue it.
            */
           try {
-            JSON.parse(data);
             controller.enqueue(ENCODER.encode(data));
+
+            /**
+             * If the stream stops due to the user running out of tokens, we
+             * want to throw.
+             *
+             * This requires iterating over result.choices[] and throwing an
+             * error if any of them have `{ finish_reason: "length" }`.
+             */
+            const parsed = JSON.parse(data);
+            if (parsed?.choices) {
+              const { choices } = parsed;
+              for (const choice of choices) {
+                if (choice?.finish_reason === "length") {
+                  throw new OpenAIError("MAX_TOKENS");
+                }
+              }
+            }
           } catch (e) {
             controller.error(e);
           }

@@ -43,7 +43,6 @@ export const OpenAI: OpenAIEdgeClient = async (
     throw new Error("No response body");
   }
 
-  // const DECODER_STREAM = new TextDecoderStream();
   let outputStream: ReadableStream<Uint8Array>;
 
   if (stream) {
@@ -87,16 +86,4 @@ export const OpenAI: OpenAIEdgeClient = async (
   }
 
   return outputStream;
-
-  /**
-   * Decode UTF-8 text.
-   */
-  // return generateStream(
-  //   async function* () {
-  //     const DECODER = new TextDecoder();
-  //     for await (const chunk of yieldStream(outputStream)) {
-  //       yield DECODER.decode(chunk);
-  //     }
-  //   }
-  // );
 };
