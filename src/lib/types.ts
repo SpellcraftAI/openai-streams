@@ -1,13 +1,17 @@
-import type { CreateCompletionRequest, CreateEditRequest, CreateEmbeddingRequest, CreateFineTuneRequest, CreateImageRequest } from "./pinned";
+import type { CreateChatCompletionRequest, CreateCompletionRequest, CreateEditRequest, CreateEmbeddingRequest, CreateFineTuneRequest, CreateImageRequest } from "./pinned";
 
 export type StreamMode = "raw" | "tokens";
 
-export type OpenAIAPIEndpoint =
-"completions" |
-"edits" |
-"embeddings" |
-"images" |
-"fine-tunes";
+export const OpenAIAPIEndpoints = {
+  "chat": "chat/completions",
+  "completions": "completions",
+  "edits": "edits",
+  "embeddings": "embeddings",
+  "images": "images",
+  "fine-tunes": "fine-tunes"
+} as const;
+
+export type OpenAIAPIEndpoint = keyof typeof OpenAIAPIEndpoints;
 
 export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
   T extends "completions"
@@ -20,7 +24,9 @@ export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
           ? CreateImageRequest
           : T extends "fine-tunes"
             ? CreateFineTuneRequest
-            : never;
+            : T extends "chat"
+              ? CreateChatCompletionRequest
+              : never;
 
 export type OpenAIOptions = {
   /**

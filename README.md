@@ -4,6 +4,8 @@
 [**NPM**](https://npmjs.com/package/nextjs-openai) |
 [**Docs**](https://openai-streams.vercel.app)
 
+> Now with ChatGPT API support (Whisper coming soon)! See ()[]
+
 This library returns OpenAI API responses as streams only. Non-stream endpoints
 like `edits` etc. are simply a stream with only one chunk update.
 
@@ -51,6 +53,9 @@ npm i --save openai-streams
 
 #### Edge/Browser: Consuming streams in Next.js Edge functions
 
+This will also work in the browser, but you'll need users to paste their OpenAI
+key and pass it in via the `{ apiKey }` option.
+
 ```ts
 import { OpenAI } from "openai-streams";
 
@@ -96,12 +101,47 @@ export default async function test (_: NextApiRequest, res: NextApiResponse) {
 }
 ```
 
-
 <sub>See the example in
 [`example/src/pages/api/hello.ts`](https://github.com/gptlabs/openai-streams/blob/master/src/pages/api/hello.ts).</sub>
 <sub>See also
 [`src/pages/api/demo.ts`](https://github.com/gptlabs/nextjs-openai/blob/master/src/pages/api/demo.ts)
 in `nextjs-openai`.</sub>
+
+#### Use with ChatGPT API
+
+By default, with `mode = "tokens"`, you will receive just the message deltas.
+For full events, use `mode = "raw"`.
+
+See: https://platform.openai.com/docs/guides/chat/introduction
+
+```ts
+const stream = await OpenAI(
+  "chat",
+  {
+    model: "gpt-3.5-turbo",
+    messages: [
+      { "role": "system", "content": "You are a helpful assistant that translates English to French." },
+      { "role": "user", "content": "Translate the following English text to French: \"Hello world!\"" }
+    ],
+  },
+);
+```
+
+
+In both modes, for Chat, you will receive a stream of serialized JSON objects.
+Even in `mode = "tokens"`, you will need to parse the deltas because they
+sometimes indicate a role and sometimes indicate part of the message body. The
+stream chunks look like:
+
+```
+{"role":"assistant"}
+{"content":"\""}
+{"content":"Bonjour"}
+{"content":" le"}
+{"content":" monde"}
+{"content":" !\""}
+{}
+```
 
 ### Notes
 

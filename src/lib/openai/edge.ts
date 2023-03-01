@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import { streamArray } from "yield-stream";
 import { ENCODER } from "../../globs/shared";
-import { EventStream, TokenStream } from "../streaming";
-import { OpenAIEdgeClient } from "../types";
+import { ChatStream, EventStream, getTokensFromResponse, TokenStream } from "../streaming";
+import { OpenAIAPIEndpoints, OpenAIEdgeClient } from "../types";
 
 /**
  * OpenAI Edge client.
@@ -22,14 +22,15 @@ export const OpenAI: OpenAIEdgeClient = async (
     throw new Error("No API key provided. Please set the OPENAI_API_KEY environment variable or pass the { apiKey } option.");
   }
 
-  const stream = endpoint === "completions";
+  const shouldStream = endpoint === "completions" || endpoint === "chat";
+  const path = OpenAIAPIEndpoints[endpoint];
   const response = await fetch(
-    `https://api.openai.com/v1/${endpoint}`,
+    `https://api.openai.com/v1/${path}`,
     {
       method: "POST",
       body: JSON.stringify({
         ...args,
-        stream: stream ? true : undefined,
+        stream: shouldStream ? true : undefined,
       }),
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -45,13 +46,23 @@ export const OpenAI: OpenAIEdgeClient = async (
 
   let outputStream: ReadableStream<Uint8Array>;
 
-  if (stream) {
+  if (shouldStream) {
     switch (mode) {
-      case "tokens":
-        outputStream = TokenStream(response.body);
-        break;
       case "raw":
         outputStream = EventStream(response.body);
+        break;
+
+      case "tokens":
+        switch (endpoint) {
+          case "chat":
+            outputStream = ChatStream(response.body);
+            break;
+
+          default:
+            outputStream = TokenStream(response.body);
+            break;
+        }
+
         break;
       default:
         throw new Error(`Invalid mode: ${mode}`);
@@ -65,15 +76,15 @@ export const OpenAI: OpenAIEdgeClient = async (
     switch (mode) {
       case "tokens":
         const json = JSON.parse(stringResult);
-        const { text } = json.choices?.[0] ?? {};
+        const tokens = getTokensFromResponse(json);
 
-        if (typeof text !== "string") {
+        if (typeof tokens !== "string") {
           console.error("No text choices received from OpenAI: " + stringResult);
           outputStream = streamArray([]);
           break;
         }
 
-        const encoded = ENCODER.encode(text);
+        const encoded = ENCODER.encode(tokens);
         outputStream = streamArray([encoded]);
         break;
       case "raw":

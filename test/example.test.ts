@@ -6,7 +6,7 @@ import { OpenAI } from "../src";
 import { yieldStream } from "yield-stream";
 import { DECODER } from "../src/globs/shared";
 
-test("'completions' endpoint", async (t) => {
+test.serial("'completions' endpoint", async (t) => {
   const stream = await OpenAI(
     "completions",
     {
@@ -28,7 +28,7 @@ test("'completions' endpoint", async (t) => {
   t.pass();
 });
 
-test("'edits' endpoint", async (t) => {
+test.serial("'edits' endpoint", async (t) => {
   const stream = await OpenAI(
     "edits",
     {
@@ -50,7 +50,7 @@ test("'edits' endpoint", async (t) => {
   t.pass();
 });
 
-test("error handling", async (t) => {
+test.serial("error handling", async (t) => {
   try {
     const stream = await OpenAI(
       "completions",
@@ -74,4 +74,25 @@ test("error handling", async (t) => {
   } catch (error) {
     t.snapshot(JSON.stringify(error, null, 2), "Should throw for MAX_TOKENS.");
   }
+});
+
+test.serial("ChatGPT support", async (t) => {
+  const stream = await OpenAI(
+    "chat",
+    {
+      model: "gpt-3.5-turbo",
+      messages: [
+        { "role": "system", "content": "You are a helpful assistant that translates English to French." },
+        { "role": "user", "content": "Translate the following English text to French: \"Hello world!\"" }
+      ],
+    },
+  );
+
+  const DECODER = new TextDecoder();
+  for await (const serialized of yieldStream(stream)) {
+    const string = DECODER.decode(serialized);
+    console.log(string);
+  }
+
+  t.pass();
 });

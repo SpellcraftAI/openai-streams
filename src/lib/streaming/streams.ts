@@ -1,5 +1,5 @@
 import { ENCODER, DECODER } from "../../globs/shared";
-import { TokenParser } from "./transforms";
+import { ChatParser, TokenParser } from "./transforms";
 
 import { createParser } from "eventsource-parser";
 import { pipeline, yieldStream } from "yield-stream";
@@ -71,5 +71,15 @@ export const TokenStream: OpenAIStream = (stream) => {
   return pipeline(
     EventStream(stream),
     TokenParser
+  );
+};
+
+/**
+ * A `ReadableStream` of parsed deltas from the given ChatGPT stream.
+ */
+export const ChatStream: OpenAIStream = (stream) => {
+  return pipeline(
+    EventStream(stream),
+    ChatParser
   );
 };

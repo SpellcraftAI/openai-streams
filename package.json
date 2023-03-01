@@ -44,6 +44,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "eventsource-parser": "^0.1.0",
+    "openai": "^3.2.0",
     "yield-stream": "^2.0.4"
   },
   "keywords": [
