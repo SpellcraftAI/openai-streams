@@ -1,7 +1,7 @@
 # OpenAI Streams
 
 [**Github**](https://github.com/gptlabs/openai-streams) |
-[**NPM**](https://npmjs.com/package/nextjs-openai) |
+[**NPM**](https://npmjs.com/package/openai-streams) |
 [**Docs**](https://openai-streams.vercel.app)
 
 > Now with ChatGPT API support! See [**Use with ChatGPT
