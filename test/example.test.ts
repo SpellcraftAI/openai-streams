@@ -50,26 +50,52 @@ test.serial("'edits' endpoint", async (t) => {
   t.pass();
 });
 
-test.only("error handling", async (t) => {
+
+test.serial("mode = 'raw': error handling", async (t) => {
+  const tokenStream = await OpenAI(
+    "completions",
+    {
+      model: "text-davinci-003",
+      prompt: "Write a short sentence.",
+      max_tokens: 5
+    },
+    { mode: "raw" }
+  );
+
+  const DECODER = new TextDecoder();
+  for await (const serialized of yieldStream(tokenStream)) {
+    const string = DECODER.decode(serialized);
+    const json = JSON.parse(string);
+    console.table(json.choices);
+  }
+
+  t.pass("Raw mode did not throw when user ran out of tokens.");
+});
+
+test.serial("mode = 'tokens': error handling", async (t) => {
   try {
-    const stream = await OpenAI(
+    const tokenStream = await OpenAI(
       "completions",
       {
         model: "text-davinci-003",
         prompt: "Write a short sentence.",
         max_tokens: 5
       },
+      { mode: "tokens" }
     );
 
     const DECODER = new TextDecoder();
-    for await (const serialized of yieldStream(stream)) {
+    for await (const serialized of yieldStream(tokenStream)) {
       const string = DECODER.decode(serialized);
-      console.table(JSON.parse(string).choices);
+      console.log(string.trim());
     }
 
-    t.fail("Did not throw when user ran out of tokens.");
+    t.fail("Tokens mode did not throw when user ran out of tokens.");
   } catch (error) {
-    t.snapshot(JSON.stringify(error, null, 2), "Should throw for MAX_TOKENS.");
+    t.snapshot(
+      JSON.stringify(error, null, 2),
+      "Tokens mode should throw for MAX_TOKENS."
+    );
   }
 });
 
