@@ -4,7 +4,8 @@
 [**NPM**](https://npmjs.com/package/nextjs-openai) |
 [**Docs**](https://openai-streams.vercel.app)
 
-> Now with ChatGPT API support (Whisper coming soon)! See ()[]
+> Now with ChatGPT API support! See [**Use with ChatGPT
+> API**](#use-with-chatgpt-api). (Whisper coming soon!)
 
 This library returns OpenAI API responses as streams only. Non-stream endpoints
 like `edits` etc. are simply a stream with only one chunk update.
