@@ -1,4 +1,5 @@
 export const OpenAIErrors = {
+  "NO_API_KEY": "No API key provided. Please set the OPENAI_API_KEY environment variable or pass the { apiKey } option.",
   "MAX_TOKENS": "Maximum number of tokens reached.",
   "UNKNOWN": "An unknown error occurred.",
 } as const;

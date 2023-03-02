@@ -4,9 +4,16 @@ import { ChatParser, TokenParser } from "./transforms";
 import { createParser } from "eventsource-parser";
 import { pipeline, yieldStream } from "yield-stream";
 import { OpenAIError } from "../errors";
+import { StreamMode } from "../types";
 
-export type OpenAIStream =
-  (stream: ReadableStream<Uint8Array>) => ReadableStream<Uint8Array>;
+export type OpenAIStreamOptions = {
+  mode: StreamMode;
+};
+
+export type OpenAIStream = (
+  stream: ReadableStream<Uint8Array>,
+  options: OpenAIStreamOptions
+) => ReadableStream<Uint8Array>;
 
 /**
  * A `ReadableStream` of server sent events from the given OpenAI API stream.
@@ -14,7 +21,10 @@ export type OpenAIStream =
  * @note This can't be done via a generator while using `createParser` because
  * there is no way to yield from within the callback.
  */
-export const EventStream: OpenAIStream = (stream) => {
+export const EventStream: OpenAIStream = (
+  stream,
+  { mode = "tokens" }
+) => {
   return new ReadableStream<Uint8Array>({
     async start(controller) {
       const parser = createParser((event) => {
@@ -31,17 +41,18 @@ export const EventStream: OpenAIStream = (stream) => {
            * Verify we have a valid JSON object and then enqueue it.
            */
           try {
+            const parsed = JSON.parse(data);
             controller.enqueue(ENCODER.encode(data));
 
             /**
-             * If the stream stops due to the user running out of tokens, we
-             * want to throw.
+             * In `tokens` mode, if the user runs out of tokens and the stream
+             * does not complete, we will throw a MAX_TOKENS error. In `raw`
+             * mode, we leave it up to the user to handle this.
              *
              * This requires iterating over result.choices[] and throwing an
              * error if any of them have `{ finish_reason: "length" }`.
              */
-            const parsed = JSON.parse(data);
-            if (parsed?.choices) {
+            if (mode === "tokens" && parsed?.choices) {
               const { choices } = parsed;
               for (const choice of choices) {
                 if (choice?.finish_reason === "length") {
@@ -67,9 +78,12 @@ export const EventStream: OpenAIStream = (stream) => {
 /**
  * A `ReadableStream` of parsed tokens from the given OpenAI API stream.
  */
-export const TokenStream: OpenAIStream = (stream) => {
+export const TokenStream: OpenAIStream = (
+  stream,
+  options = { mode: "tokens" }
+) => {
   return pipeline(
-    EventStream(stream),
+    EventStream(stream, options),
     TokenParser
   );
 };
@@ -77,9 +91,12 @@ export const TokenStream: OpenAIStream = (stream) => {
 /**
  * A `ReadableStream` of parsed deltas from the given ChatGPT stream.
  */
-export const ChatStream: OpenAIStream = (stream) => {
+export const ChatStream: OpenAIStream = (
+  stream,
+  options = { mode: "tokens" }
+) => {
   return pipeline(
-    EventStream(stream),
+    EventStream(stream, options),
     ChatParser
   );
 };

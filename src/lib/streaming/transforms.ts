@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import { Transform } from "yield-stream";
 import { ENCODER, DECODER } from "../../globs/shared";
+import { OpenAIError } from "../errors";
 
 /**
  * Parse the first text choice from an OpenAI API response. It may be stored on
@@ -9,12 +11,14 @@ export const getTokensFromResponse = (response: any) => {
   // console.log(JSON.stringify(response, null, 2));
   const firstResponse = response?.choices?.[0];
   if (!firstResponse) {
-    throw new Error("No choices received from OpenAI");
+    console.error("No choices received from OpenAI");
+    throw new OpenAIError("UNKNOWN");
   }
 
   const text = firstResponse?.text ?? firstResponse?.message;
   if (typeof text !== "string") {
-    throw new Error("No text response received from OpenAI");
+    console.error("No text received from OpenAI choice");
+    throw new OpenAIError("UNKNOWN");
   }
 
   return text;
@@ -31,7 +35,8 @@ export const ChatParser: Transform = async function* (chunk) {
   const delta = firstResult?.delta;
 
   if (typeof delta !== "object") {
-    throw new Error("Received invalid delta from OpenAI in ChatParser.");
+    console.error("Received invalid delta from OpenAI in ChatParser.");
+    throw new OpenAIError("UNKNOWN");
   }
 
   const serialized = JSON.stringify(delta);

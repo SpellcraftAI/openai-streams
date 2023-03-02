@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { streamArray } from "yield-stream";
 import { ENCODER } from "../../globs/shared";
+import { OpenAIError } from "../errors";
 import { ChatStream, EventStream, getTokensFromResponse, TokenStream } from "../streaming";
 import { OpenAIAPIEndpoints, OpenAIEdgeClient } from "../types";
 
@@ -19,7 +20,7 @@ export const OpenAI: OpenAIEdgeClient = async (
   } = {}
 ) => {
   if (!apiKey) {
-    throw new Error("No API key provided. Please set the OPENAI_API_KEY environment variable or pass the { apiKey } option.");
+    throw new OpenAIError("NO_API_KEY");
   }
 
   const shouldStream = endpoint === "completions" || endpoint === "chat";
@@ -41,31 +42,33 @@ export const OpenAI: OpenAIEdgeClient = async (
   );
 
   if (!response.body) {
-    throw new Error("No response body");
+    throw new OpenAIError("UNKNOWN");
   }
 
   let outputStream: ReadableStream<Uint8Array>;
+  const options = { mode };
 
   if (shouldStream) {
     switch (mode) {
       case "raw":
-        outputStream = EventStream(response.body);
+        outputStream = EventStream(response.body, options);
         break;
 
       case "tokens":
         switch (endpoint) {
           case "chat":
-            outputStream = ChatStream(response.body);
+            outputStream = ChatStream(response.body, options);
             break;
 
           default:
-            outputStream = TokenStream(response.body);
+            outputStream = TokenStream(response.body, options);
             break;
         }
-
         break;
+
       default:
-        throw new Error(`Invalid mode: ${mode}`);
+        console.error(`Unknown mode: ${mode} for streaming response.`);
+        throw new OpenAIError("UNKNOWN");
     }
   } else {
     /**
@@ -92,7 +95,8 @@ export const OpenAI: OpenAIEdgeClient = async (
         outputStream = streamArray([encodedJson]);
         break;
       default:
-        throw new Error(`Invalid mode: ${mode}`);
+        console.error(`Unknown mode: ${mode} for non-streaming response.`);
+        throw new OpenAIError("UNKNOWN");
     }
   }
 
