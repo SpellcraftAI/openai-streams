@@ -50,7 +50,7 @@ test.serial("'edits' endpoint", async (t) => {
   t.pass();
 });
 
-test.serial("error handling", async (t) => {
+test.only("error handling", async (t) => {
   try {
     const stream = await OpenAI(
       "completions",
@@ -59,9 +59,6 @@ test.serial("error handling", async (t) => {
         prompt: "Write a short sentence.",
         max_tokens: 5
       },
-      {
-        mode: "raw"
-      }
     );
 
     const DECODER = new TextDecoder();

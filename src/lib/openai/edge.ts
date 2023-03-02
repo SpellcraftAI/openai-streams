@@ -45,25 +45,26 @@ export const OpenAI: OpenAIEdgeClient = async (
   }
 
   let outputStream: ReadableStream<Uint8Array>;
+  const options = { mode };
 
   if (shouldStream) {
     switch (mode) {
       case "raw":
-        outputStream = EventStream(response.body);
+        outputStream = EventStream(response.body, options);
         break;
 
       case "tokens":
         switch (endpoint) {
           case "chat":
-            outputStream = ChatStream(response.body);
+            outputStream = ChatStream(response.body, options);
             break;
 
           default:
-            outputStream = TokenStream(response.body);
+            outputStream = TokenStream(response.body, options);
             break;
         }
-
         break;
+
       default:
         throw new Error(`Invalid mode: ${mode}`);
     }
