@@ -69,7 +69,16 @@ export const EventStream: OpenAIStream = (
        * Feed the parser with decoded chunks from the raw stream.
        */
       for await (const chunk of yieldStream(stream)) {
-        parser.feed(DECODER.decode(chunk));
+        const decoded = DECODER.decode(chunk);
+
+        try {
+          const parsed = JSON.parse(decoded);
+
+          if (parsed.hasOwnProperty("error"))
+            controller.error(new Error(parsed.error.message));
+        } catch (e) {}
+
+        parser.feed(decoded);
       }
     },
   });
