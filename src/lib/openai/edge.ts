@@ -2,7 +2,12 @@
 import { streamArray } from "yield-stream";
 import { ENCODER } from "../../globs/shared";
 import { OpenAIError } from "../errors";
-import { ChatStream, EventStream, getTokensFromResponse, TokenStream } from "../streaming";
+import {
+  ChatStream,
+  EventStream,
+  getTokensFromResponse,
+  TokenStream,
+} from "../streaming";
 import { OpenAIAPIEndpoints, OpenAIEdgeClient } from "../types";
 
 /**
@@ -17,7 +22,8 @@ export const OpenAI: OpenAIEdgeClient = async (
   {
     mode = "tokens",
     apiKey = process.env.OPENAI_API_KEY,
-  } = {}
+    basePath = "https://api.openai.com/v1",
+  } = {},
 ) => {
   if (!apiKey) {
     throw new OpenAIError("NO_API_KEY");
@@ -25,21 +31,18 @@ export const OpenAI: OpenAIEdgeClient = async (
 
   const shouldStream = endpoint === "completions" || endpoint === "chat";
   const path = OpenAIAPIEndpoints[endpoint];
-  const response = await fetch(
-    `https://api.openai.com/v1/${path}`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        ...args,
-        stream: shouldStream ? true : undefined,
-      }),
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-    }
-  );
+  const response = await fetch(`${basePath}/${path}`, {
+    method: "POST",
+    body: JSON.stringify({
+      ...args,
+      stream: shouldStream ? true : undefined,
+    }),
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
 
   if (!response.body) {
     throw new OpenAIError("UNKNOWN");
