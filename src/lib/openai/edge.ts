@@ -61,10 +61,6 @@ export const OpenAI: OpenAIEdgeClient = async (
     throw new OpenAIError("UNKNOWN");
   }
 
-  if (!response.body) {
-    throw new OpenAIError("UNKNOWN");
-  }
-
   let outputStream: ReadableStream<Uint8Array>;
   const options = { mode };
 
