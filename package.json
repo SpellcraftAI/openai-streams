@@ -1,7 +1,7 @@
 {
   "name": "openai-streams",
   "description": "Tools for working with OpenAI streams in Node.js and TypeScript.",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "license": "MIT",
   "type": "module",
   "platform": "node",
