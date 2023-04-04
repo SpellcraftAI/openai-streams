@@ -121,27 +121,25 @@ test.serial("ChatGPT support", async (t) => {
 });
 
 test.serial("ChatGPT error propagation", async (t) => {
-  await t.throwsAsync(
-    async () => {
-      const stream = await OpenAI(
-        "chat",
-        {
-          model: "gpt-3.5-turbo",
-          messages: [
-            { "role": "system", "content": "You are a helpful assistant that translates English to French." },
-            { "role": "user", "content": "Translate the following English text to French: \"Hello world!\"" }
-          ],
-        },
-        { apiKey: "THIS_IS_A_FAKE_KEY" }
-      );
+  try {
+    const stream = await OpenAI(
+      "chat",
+      {
+        model: "gpt-3.5-turbo",
+        messages: [
+          { "role": "system", "content": "You are a helpful assistant that translates English to French." },
+          { "role": "user", "content": "Translate the following English text to French: \"Hello world!\"" }
+        ],
+      },
+      { apiKey: "THIS_IS_A_FAKE_KEY" }
+    );
 
-      const DECODER = new TextDecoder();
-      for await (const serialized of yieldStream(stream)) {
-        const string = DECODER.decode(serialized);
-        console.log(string);
-      }
-    }, { 
-      instanceOf: Error, 
-      message: "Incorrect API key provided: THIS_IS_******_KEY. You can find your API key at https://platform.openai.com/account/api-keys.", 
-    });
+    const DECODER = new TextDecoder();
+    for await (const serialized of yieldStream(stream)) {
+      const string = DECODER.decode(serialized);
+      console.log(string);
+    }
+  } catch (e) {
+    t.snapshot(e);
+  }
 });
