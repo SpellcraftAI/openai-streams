@@ -41,24 +41,19 @@ export const OpenAI: OpenAIEdgeClient = async (
     }
   );
 
-  if (response.status === 401) {
-    throw new OpenAIError("INVALID_API_KEY");
-  }
-
-  if (response.status === 404) {
-    throw new OpenAIError("INVALID_MODEL");
-  }
-
-  if (response.status === 429) {
-    throw new OpenAIError("RATE_LIMIT_REACHED");
-  }
-
-  if (response.status === 500) {
-    throw new OpenAIError("SERVER_ERROR");
-  }
-
-  if (!response.body) {
-    throw new OpenAIError("UNKNOWN");
+  switch (response.status) {
+    case 401:
+      throw new OpenAIError("INVALID_API_KEY");
+    case 404:
+      throw new OpenAIError("INVALID_MODEL");
+    case 429:
+      throw new OpenAIError("RATE_LIMIT_REACHED");
+    case 500:
+      throw new OpenAIError("SERVER_ERROR");
+    default:
+      if (!response.body) {
+        throw new OpenAIError("UNKNOWN");
+      }
   }
 
   let outputStream: ReadableStream<Uint8Array>;
