@@ -32,15 +32,17 @@ export const ChatParser: Transform = async function* (chunk) {
   const decoded = DECODER.decode(chunk);
   const response = JSON.parse(decoded);
   const firstResult = response?.choices?.[0];
-  const delta = firstResult?.delta;
+  const { delta } = firstResult ?? {};
 
   if (typeof delta !== "object") {
     console.error("Received invalid delta from OpenAI in ChatParser.");
     throw new OpenAIError("UNKNOWN");
   }
 
-  const serialized = JSON.stringify(delta);
-  yield ENCODER.encode(serialized);
+  const { content } = delta;
+  if (content) {
+    yield ENCODER.encode(content);
+  }
 };
 
 /**

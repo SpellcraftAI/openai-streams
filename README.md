@@ -129,20 +129,22 @@ const stream = await OpenAI(
 ```
 
 
-In both modes, for Chat, you will receive a stream of serialized JSON objects.
-Even in `mode = "tokens"`, you will need to parse the deltas because they
-sometimes indicate a role and sometimes indicate part of the message body. The
-stream chunks look like:
+In `token` mode, you will just receive the response chunks, which look like this
+(separated with newlines for illustration):
 
 ```
-{"role":"assistant"}
-{"content":"\""}
-{"content":"Bonjour"}
-{"content":" le"}
-{"content":" monde"}
-{"content":" !\""}
-{}
+Hello
+!
+ How
+ can
+ I
+ assist
+ you
+ today
+?
 ```
+
+Use `mode = "raw"` for access to raw events.
 
 ### Notes
 
