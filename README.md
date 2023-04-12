@@ -28,6 +28,17 @@ npm i --save openai-streams
 
 ### Usage
 
+```ts
+await OpenAI(
+  /** 'completions', 'chat', etc. */
+  ENDPOINT,
+  /** max_tokens, temperature, messages, etc. */
+  PARAMS,
+  /** apiKey, mode, etc. */
+  OPTIONS
+)
+```
+
 1. **Set the `OPENAI_API_KEY` env variable** (or pass the `{ apiKey }` option).
 
    The library will throw if it cannot find an API key. Your program will load
@@ -40,16 +51,26 @@ npm i --save openai-streams
    ```ts
    await OpenAI(
      "completions", 
-     {/* params */}, 
+     {/* endpoint params */}, 
      { apiKey: process.env.MY_SECRET_API_KEY }
    )
    ```
 
-2. **Call the API via `await OpenAI(endpoint, params)`.**
+2. **Call the API via `await OpenAI(endpoint, params, options?)`.**
 
    The `params` type will be inferred based on the `endpoint` you provide, i.e.
    for the `"edits"` endpoint, `import('openai').CreateEditRequest` will be
    enforced.
+
+   Example with `raw` streaming mode:
+
+   ```ts
+   await OpenAI(
+    "chat",
+    { messages: [/* ... */] },
+    { mode: "raw" }
+   )
+   ```
 
 
 #### Edge/Browser: Consuming streams in Next.js Edge functions
@@ -67,7 +88,7 @@ export default async function handler() {
       model: "text-davinci-003",
       prompt: "Write a happy sentence.\n\n",
       max_tokens: 100
-    },
+    }
   );
 
   return new Response(stream);
@@ -129,7 +150,7 @@ const stream = await OpenAI(
 ```
 
 
-In `token` mode, you will just receive the response chunks, which look like this
+In `tokens` mode, you will just receive the response chunks, which look like this
 (separated with newlines for illustration):
 
 ```
