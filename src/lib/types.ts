@@ -13,7 +13,7 @@ export const OpenAIAPIEndpoints = {
 
 export type OpenAIAPIEndpoint = keyof typeof OpenAIAPIEndpoints;
 
-export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
+export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> = (
   T extends "completions"
     ? Omit<CreateCompletionRequest, "stream">
     : T extends "edits"
@@ -26,7 +26,8 @@ export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
             ? CreateFineTuneRequest
             : T extends "chat"
               ? CreateChatCompletionRequest
-              : never;
+              : never
+);
 
 export type OpenAIOptions = {
   /**
@@ -38,6 +39,11 @@ export type OpenAIOptions = {
    * Whether to return tokens or raw events.
    */
   mode?: StreamMode;
+  /**
+   * An optional AbortController, which can be used to abort the request
+   * mid-flight.
+   */
+  controller?: AbortController;
 };
 
 /**

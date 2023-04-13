@@ -143,3 +143,41 @@ test.serial("ChatGPT error propagation", async (t) => {
     t.snapshot(e);
   }
 });
+
+test.serial("cancelling streams", async (t) => {
+  const controller = new AbortController();
+
+  const stream = await OpenAI(
+    "completions",
+    {
+      model: "text-davinci-003",
+      prompt: "Write two sentences.",
+      max_tokens: 50
+    },
+    {
+      controller,
+    }
+  );
+
+  /**
+   * Write each chunk to the screen as one string.
+   */
+  let i = 0;
+  const chunks: string[] = [];
+
+  try {
+    for await (const chunk of yieldStream(stream)) {
+      i++;
+      chunks.push(DECODER.decode(chunk));
+      process.stdout.write(JSON.stringify(chunks));
+
+      if (i >= 5) {
+        controller.abort();
+      }
+    }
+  } catch (e) {
+    t.is(e.name, "AbortError", "Stream should have been aborted.");
+  }
+
+  t.is(i, 5, "Stream should have been cancelled after 5 chunks.");
+});

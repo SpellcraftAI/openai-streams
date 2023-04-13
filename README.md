@@ -34,7 +34,7 @@ await OpenAI(
   ENDPOINT,
   /** max_tokens, temperature, messages, etc. */
   PARAMS,
-  /** apiKey, mode, etc. */
+  /** apiKey, mode, controller, etc */
   OPTIONS
 )
 ```
@@ -71,8 +71,7 @@ await OpenAI(
     { mode: "raw" }
    )
    ```
-
-
+   
 #### Edge/Browser: Consuming streams in Next.js Edge functions
 
 This will also work in the browser, but you'll need users to paste their OpenAI

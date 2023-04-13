@@ -17,6 +17,7 @@ export const OpenAI: OpenAIEdgeClient = async (
   {
     mode = "tokens",
     apiKey = process.env.OPENAI_API_KEY,
+    controller,
   } = {}
 ) => {
   if (!apiKey) {
@@ -38,6 +39,7 @@ export const OpenAI: OpenAIEdgeClient = async (
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
+      signal: controller?.signal,
     }
   );
 
