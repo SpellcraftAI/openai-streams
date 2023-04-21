@@ -1,6 +1,6 @@
 # OpenAI Streams
 
-[**Github**](https://github.com/gptlabs/openai-streams) |
+[**Github**](https://github.com/SpellcraftAI/openai-streams) |
 [**NPM**](https://npmjs.com/package/openai-streams) |
 [**Docs**](https://openai-streams.vercel.app)
 
@@ -123,9 +123,9 @@ export default async function test (_: NextApiRequest, res: NextApiResponse) {
 ```
 
 <sub>See the example in
-[`example/src/pages/api/hello.ts`](https://github.com/gptlabs/openai-streams/blob/master/src/pages/api/hello.ts).</sub>
+[`example/src/pages/api/hello.ts`](https://github.com/SpellcraftAI/openai-streams/blob/master/src/pages/api/hello.ts).</sub>
 <sub>See also
-[`src/pages/api/demo.ts`](https://github.com/gptlabs/nextjs-openai/blob/master/src/pages/api/demo.ts)
+[`src/pages/api/demo.ts`](https://github.com/SpellcraftAI/nextjs-openai/blob/master/src/pages/api/demo.ts)
 in `nextjs-openai`.</sub>
 
 #### Use with ChatGPT API
