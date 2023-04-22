@@ -51,7 +51,8 @@
     "openai",
     "typescript",
     "streams",
-    "gpt-3"
+    "gpt-3",
+    "gpt-4"
   ],
   "homepage": "https://github.com/SpellcraftAI/openai-streams"
 }
