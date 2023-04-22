@@ -2,7 +2,7 @@
   "author": "Trelent Inc. contact@trelent.com (https://trelent.com)",
   "name": "@trelent/openai-streams",
   "description": "Tools for working with OpenAI streams in Node.js and TypeScript.",
-  "version": "5.1.2-canary.3",
+  "version": "5.1.2-canary.4",
   "license": "MIT",
   "type": "module",
   "platform": "node",
@@ -22,7 +22,7 @@
     "./*": "./dist/*/index.js"
   },
   "scripts": {
-    "canary": "yarn build && yarn version --prerelease --preid=canary && npm publish --tag canary",
+    "canary": "yarn build && yarn version --prerelease --preid=canary && npm publish --access public --tag canary",
     "dev": "tsmodule dev",
     "docs": "yarn typedoc src",
     "build": "tsmodule build",
