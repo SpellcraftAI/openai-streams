@@ -149,7 +149,7 @@ test.serial("ChatGPT error propagation", async (t) => {
           {
             role: "user",
             content:
-              'Translate the following English text to French: "Hello world!"',
+              "Translate the following English text to French: \"Hello world!\"",
           },
         ],
       },

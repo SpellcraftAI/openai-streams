@@ -24,16 +24,16 @@ export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
   T extends "completions"
     ? Omit<CreateCompletionRequest, "stream">
     : T extends "edits"
-    ? CreateEditRequest
-    : T extends "embeddings"
-    ? CreateEmbeddingRequest
-    : T extends "images"
-    ? CreateImageRequest
-    : T extends "fine-tunes"
-    ? CreateFineTuneRequest
-    : T extends "chat"
-    ? CreateChatCompletionRequest
-    : never;
+      ? CreateEditRequest
+      : T extends "embeddings"
+        ? CreateEmbeddingRequest
+        : T extends "images"
+          ? CreateImageRequest
+          : T extends "fine-tunes"
+            ? CreateFineTuneRequest
+            : T extends "chat"
+              ? CreateChatCompletionRequest
+              : never;
 
 export type OpenAIOptions = {
   /**
