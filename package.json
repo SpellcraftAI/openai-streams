@@ -1,7 +1,7 @@
 {
   "name": "trelent-gpteam-openai-streams",
   "description": "Tools for working with OpenAI streams in Node.js and TypeScript.",
-  "version": "5.1.1",
+  "version": "5.1.2-canary.0",
   "license": "MIT",
   "type": "module",
   "platform": "node",
