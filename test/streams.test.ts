@@ -7,14 +7,11 @@ import { yieldStream } from "yield-stream";
 import { DECODER } from "../src/globs/shared";
 
 test.serial("'completions' endpoint", async (t) => {
-  const stream = await OpenAI(
-    "completions",
-    {
-      model: "text-davinci-003",
-      prompt: "Write a sentence.",
-      max_tokens: 50
-    }
-  );
+  const stream = await OpenAI("completions", {
+    model: "text-davinci-003",
+    prompt: "Write a sentence.",
+    max_tokens: 50,
+  });
 
   /**
    * Write each chunk to the screen as one string.
@@ -29,14 +26,11 @@ test.serial("'completions' endpoint", async (t) => {
 });
 
 test.serial("'edits' endpoint", async (t) => {
-  const stream = await OpenAI(
-    "edits",
-    {
-      model: "text-davinci-edit-001",
-      input: "helo wrld",
-      instruction: "Fix spelling mistakes."
-    }
-  );
+  const stream = await OpenAI("edits", {
+    model: "text-davinci-edit-001",
+    input: "helo wrld",
+    instruction: "Fix spelling mistakes.",
+  });
 
   /**
    * Write each chunk to the screen as one string.
@@ -50,14 +44,13 @@ test.serial("'edits' endpoint", async (t) => {
   t.pass();
 });
 
-
 test.serial("mode = 'raw': error handling", async (t) => {
   const tokenStream = await OpenAI(
     "completions",
     {
       model: "text-davinci-003",
       prompt: "Write a short sentence.",
-      max_tokens: 5
+      max_tokens: 5,
     },
     { mode: "raw" }
   );
@@ -79,7 +72,7 @@ test.serial("mode = 'tokens': error handling", async (t) => {
       {
         model: "text-davinci-003",
         prompt: "Write a short sentence.",
-        max_tokens: 5
+        max_tokens: 5,
       },
       { mode: "tokens" }
     );
@@ -100,15 +93,36 @@ test.serial("mode = 'tokens': error handling", async (t) => {
 });
 
 test.serial("ChatGPT support", async (t) => {
+  const stream = await OpenAI("chat", {
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      { role: "user", content: "This is a test message, say hello!" },
+    ],
+  });
+
+  const DECODER = new TextDecoder();
+  for await (const serialized of yieldStream(stream)) {
+    const string = DECODER.decode(serialized);
+    console.log(string);
+  }
+
+  t.pass();
+});
+
+test.serial("API base support", async (t) => {
   const stream = await OpenAI(
     "chat",
     {
       model: "gpt-3.5-turbo",
       messages: [
-        { "role": "system", "content": "You are a helpful assistant." },
-        { "role": "user", "content": "This is a test message, say hello!" }
+        { role: "system", content: "You are a helpful assistant." },
+        { role: "user", content: "This is a test message, say hello!" },
       ],
     },
+    {
+      apiBase: "https://oai.hconeai.com/v1",
+    }
   );
 
   const DECODER = new TextDecoder();
@@ -127,8 +141,16 @@ test.serial("ChatGPT error propagation", async (t) => {
       {
         model: "gpt-3.5-turbo",
         messages: [
-          { "role": "system", "content": "You are a helpful assistant that translates English to French." },
-          { "role": "user", "content": "Translate the following English text to French: \"Hello world!\"" }
+          {
+            role: "system",
+            content:
+              "You are a helpful assistant that translates English to French.",
+          },
+          {
+            role: "user",
+            content:
+              'Translate the following English text to French: "Hello world!"',
+          },
         ],
       },
       { apiKey: "THIS_IS_A_FAKE_KEY" }
@@ -152,7 +174,7 @@ test.serial("cancelling streams", async (t) => {
     {
       model: "text-davinci-003",
       prompt: "Write two sentences.",
-      max_tokens: 50
+      max_tokens: 50,
     },
     {
       controller,
