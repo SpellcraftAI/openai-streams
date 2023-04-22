@@ -1,5 +1,5 @@
 {
-  "name": "openai-streams",
+  "name": "trelent-gpteam-openai-streams",
   "description": "Tools for working with OpenAI streams in Node.js and TypeScript.",
   "version": "5.1.1",
   "license": "MIT",
@@ -54,5 +54,5 @@
     "gpt-3",
     "gpt-4"
   ],
-  "homepage": "https://github.com/SpellcraftAI/openai-streams"
+  "homepage": "https://github.com/trelent-gpteam/openai-streams"
 }
