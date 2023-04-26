@@ -47,6 +47,11 @@ export type OpenAIOptions = {
    */
   apiKey?: string;
   /**
+   * Additional headers to pass to the API. This is useful is you want to
+   * pass additional parameters to a proxy service, for instance.
+   */
+  apiHeaders?: Record<string, string>;
+  /**
    * Whether to return tokens or raw events.
    */
   mode?: StreamMode;

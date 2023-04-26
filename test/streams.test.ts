@@ -134,6 +134,40 @@ test.serial("API base support", async (t) => {
   t.pass();
 });
 
+const openaiOrganization = process.env.OPENAI_ORGANIZATION;
+if (openaiOrganization === undefined) {
+  console.log(
+    "Skipping 'API headers support' test because $OPENAI_ORGANIZATION is not set."
+  );
+} else {
+  test.serial("API headers support", async (t) => {
+    const stream = await OpenAI(
+      "chat",
+      {
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: "This is a test message, say hello!" },
+        ],
+      },
+      {
+        apiBase: "https://oai.hconeai.com/v1",
+        apiHeaders: {
+          "OpenAI-Organization": openaiOrganization,
+        },
+      }
+    );
+
+    const DECODER = new TextDecoder();
+    for await (const serialized of yieldStream(stream)) {
+      const string = DECODER.decode(serialized);
+      console.log(string);
+    }
+
+    t.pass();
+  });
+}
+
 test.serial("ChatGPT error propagation", async (t) => {
   try {
     const stream = await OpenAI(
