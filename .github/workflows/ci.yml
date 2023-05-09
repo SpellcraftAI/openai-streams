@@ -1,9 +1,13 @@
 name: CI
 
 on:
-  pull_request:
+  push:
     branches:
       - '**'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.OVERRIDE_GITHUB_TOKEN }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
 jobs:
   test:

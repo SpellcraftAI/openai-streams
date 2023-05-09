@@ -1,7 +1,11 @@
 name: Release (canary)
 
+env:
+  GITHUB_TOKEN: ${{ secrets.OVERRIDE_GITHUB_TOKEN }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
 on:
-  pull_request:
+  pull_request_target:
     types:
       - closed
 
@@ -34,8 +38,6 @@ jobs:
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      env:
-        GITHUB_TOKEN: ${{ secrets.OVERRIDE_GITHUB_TOKEN }}
 
     - name: Use Git checkout with submodules
       uses: actions/checkout@v3
@@ -61,10 +63,6 @@ jobs:
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      env:
-        GITHUB_TOKEN: ${{ secrets.OVERRIDE_GITHUB_TOKEN }}
 
     - name: Test Production Bundle & Release
       run: npx release-it --preRelease=canary --ci -VV
-      env:
-        GITHUB_TOKEN: ${{ secrets.OVERRIDE_GITHUB_TOKEN }}
