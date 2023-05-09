@@ -5,7 +5,9 @@ env:
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
 on:
-  pull_request_target:
+  workflow_dispatch: {}
+
+  pull_request:
     types:
       - closed
 
@@ -14,7 +16,7 @@ on:
 
 jobs:
   Release:
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     
     name: Node.js v${{ matrix.nodejs }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
@@ -22,12 +24,12 @@ jobs:
 
     strategy:
       matrix:
-        nodejs: [16]
+        nodejs: [18]
         os: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.nodejs }}
 
