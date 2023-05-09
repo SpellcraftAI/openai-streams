@@ -23,7 +23,8 @@
   "scripts": {
     "dev": "tsmodule dev",
     "docs": "pnpm typedoc src",
-    "export": "tsmodule build && pnpm docs",
+    "export": "tsmodule build",
+    "build": "pnpm export && pnpm docs",
     "test": "pnpm export && ava",
     "retest": "ava",
     "prepublishOnly": "pnpm test",

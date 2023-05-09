@@ -44,8 +44,5 @@ jobs:
     - name: Install
       run: pnpm i
 
-    - name: Build
-      run: pnpm export
-
     - name: Test
       run: pnpm test
