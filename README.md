@@ -123,10 +123,8 @@ export default async function test (_: NextApiRequest, res: NextApiResponse) {
 ```
 
 <sub>See the example in
-[`example/src/pages/api/hello.ts`](https://github.com/SpellcraftAI/openai-streams/blob/master/src/pages/api/hello.ts).</sub>
-<sub>See also
-[`src/pages/api/demo.ts`](https://github.com/SpellcraftAI/nextjs-openai/blob/master/src/pages/api/demo.ts)
-in `nextjs-openai`.</sub>
+[`example/src/pages/api/hello.ts`](https://github.com/SpellcraftAI/openai-streams/blob/master/example/src/pages/api/hello.ts).</sub>
+<sub>
 
 #### Use with ChatGPT API
 
