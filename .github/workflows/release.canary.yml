@@ -5,6 +5,8 @@ env:
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
 on:
+  workflow_dispatch: {}
+
   pull_request_target:
     types:
       - closed
@@ -14,7 +16,7 @@ on:
 
 jobs:
   Release:
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     
     name: Node.js v${{ matrix.nodejs }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
