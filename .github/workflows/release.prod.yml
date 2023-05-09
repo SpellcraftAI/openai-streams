@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        nodejs: [16]
+        nodejs: [18]
         os: [ubuntu-latest]
 
     steps:
