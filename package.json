@@ -1,6 +1,7 @@
 {
   "name": "openai-streams",
   "description": "Tools for working with OpenAI streams in Node.js and TypeScript.",
+  "homepage": "https://github.com/SpellcraftAI/openai-streams",
   "version": "5.1.2-canary.0",
   "license": "MIT",
   "type": "module",
@@ -52,5 +53,14 @@
     "streams",
     "gpt-3"
   ],
-  "homepage": "https://github.com/SpellcraftAI/openai-streams"
+  "release-it": {
+    "git": {
+      "commitMessage": "release: v${version}",
+      "tagAnnotation": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "releaseName": "v${version}"
+    }
+  }
 }
