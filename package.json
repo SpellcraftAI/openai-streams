@@ -22,9 +22,9 @@
   },
   "scripts": {
     "dev": "tsmodule dev",
-    "docs": "pnpm typedoc src",
+    "export-docs": "pnpm typedoc src",
     "export": "tsmodule build",
-    "build": "pnpm export && pnpm docs",
+    "build": "pnpm export && pnpm export-docs",
     "test": "pnpm export && ava",
     "retest": "ava",
     "prepublishOnly": "pnpm test",
