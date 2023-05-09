@@ -1,9 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - '**'
   pull_request:
     branches:
       - '**'
@@ -26,15 +23,26 @@ jobs:
           macos-latest
         ]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.nodejs }}
 
-    - name: Install and link
-      run: yarn install --frozen-lockfile && yarn build
+    - name: Use Git checkout with submodules
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        token: ${{ secrets.OVERRIDE_GITHUB_TOKEN }}
+
+    - name: Use PNPM
+      uses: pnpm/action-setup@v2
+      with:
+        version: latest
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        cache: pnpm
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install
+      run: pnpm i
 
     - name: Test
-      run: yarn test
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: pnpm test

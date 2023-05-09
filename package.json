@@ -21,30 +21,29 @@
     "./*": "./dist/*/index.js"
   },
   "scripts": {
-    "canary": "yarn build && yarn version --prerelease --preid=canary && npm publish --tag canary",
     "dev": "tsmodule dev",
-    "docs": "yarn typedoc src",
-    "build": "tsmodule build",
-    "postbuild": "yarn docs",
-    "test": "yarn build && ava",
+    "export-docs": "pnpm typedoc src",
+    "export": "tsmodule build",
+    "build": "pnpm export && pnpm export-docs",
+    "test": "pnpm export && ava",
     "retest": "ava",
-    "prepublishOnly": "yarn test",
+    "prepublishOnly": "pnpm test",
     "lint": "eslint src --fix"
   },
   "devDependencies": {
-    "@tsmodule/tsmodule": "^42.1.0",
-    "@types/node": "^18.14.4",
-    "@typescript-eslint/eslint-plugin": "^5.54.0",
-    "@typescript-eslint/parser": "^5.54.0",
+    "@tsmodule/tsmodule": "^44.5.0",
+    "@types/node": "^20.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.5",
+    "@typescript-eslint/parser": "^5.59.5",
     "ava": "^5.2.0",
-    "eslint": "^8.35.0",
+    "eslint": "^8.40.0",
     "openai": "^3.2.1",
-    "typedoc": "^0.23.26",
-    "typescript": "^4.9.5"
+    "typedoc": "^0.24.7",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
-    "eventsource-parser": "^0.1.0",
+    "eventsource-parser": "^1.0.0",
     "yield-stream": "^3.0.0"
   },
   "keywords": [
