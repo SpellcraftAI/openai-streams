@@ -21,14 +21,12 @@
     "./*": "./dist/*/index.js"
   },
   "scripts": {
-    "canary": "yarn build && yarn version --prerelease --preid=canary && npm publish --tag canary",
     "dev": "tsmodule dev",
-    "docs": "yarn typedoc src",
-    "build": "tsmodule build",
-    "postbuild": "yarn docs",
-    "test": "yarn build && ava",
+    "docs": "pnpm typedoc src",
+    "export": "tsmodule build && pnpm docs",
+    "test": "pnpm export && ava",
     "retest": "ava",
-    "prepublishOnly": "yarn test",
+    "prepublishOnly": "pnpm test",
     "lint": "eslint src --fix"
   },
   "devDependencies": {
