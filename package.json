@@ -1,5 +1,6 @@
 {
-  "name": "openai-streams",
+  "author": "Trelent Inc. contact@trelent.com (https://trelent.com)",
+  "name": "@trelent/openai-streams",
   "description": "Tools for working with OpenAI streams in Node.js and TypeScript.",
   "homepage": "https://github.com/SpellcraftAI/openai-streams",
   "version": "5.2.0",
@@ -51,7 +52,8 @@
     "openai",
     "typescript",
     "streams",
-    "gpt-3"
+    "gpt-3",
+    "gpt-4"
   ],
   "release-it": {
     "git": {

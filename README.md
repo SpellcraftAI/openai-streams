@@ -34,9 +34,9 @@ await OpenAI(
   ENDPOINT,
   /** max_tokens, temperature, messages, etc. */
   PARAMS,
-  /** apiKey, mode, controller, etc */
+  /** apiBase, apiKey, mode, controller, etc */
   OPTIONS
-)
+);
 ```
 
 1. **Set the `OPENAI_API_KEY` env variable** (or pass the `{ apiKey }` option).
@@ -50,10 +50,12 @@ await OpenAI(
 
    ```ts
    await OpenAI(
-     "completions", 
-     {/* endpoint params */}, 
+     "completions",
+     {
+       /* endpoint params */
+     },
      { apiKey: process.env.MY_SECRET_API_KEY }
-   )
+   );
    ```
 
 2. **Call the API via `await OpenAI(endpoint, params, options?)`.**
@@ -66,12 +68,16 @@ await OpenAI(
 
    ```ts
    await OpenAI(
-    "chat",
-    { messages: [/* ... */] },
-    { mode: "raw" }
-   )
+     "chat",
+     {
+       messages: [
+         /* ... */
+       ],
+     },
+     { mode: "raw" }
+   );
    ```
-   
+
 #### Edge/Browser: Consuming streams in Next.js Edge functions
 
 This will also work in the browser, but you'll need users to paste their OpenAI
@@ -81,23 +87,19 @@ key and pass it in via the `{ apiKey }` option.
 import { OpenAI } from "openai-streams";
 
 export default async function handler() {
-  const stream = await OpenAI(
-    "completions",
-    {
-      model: "text-davinci-003",
-      prompt: "Write a happy sentence.\n\n",
-      max_tokens: 100
-    }
-  );
+  const stream = await OpenAI("completions", {
+    model: "text-davinci-003",
+    prompt: "Write a happy sentence.\n\n",
+    max_tokens: 100,
+  });
 
   return new Response(stream);
 }
 
 export const config = {
-  runtime: "edge"
+  runtime: "edge",
 };
 ```
-
 
 #### Node: Consuming streams in Next.js API Route (Node)
 
@@ -108,15 +110,12 @@ reason, use `openai-streams/node`:
 import type { NextApiRequest, NextApiResponse } from "next";
 import { OpenAI } from "openai-streams/node";
 
-export default async function test (_: NextApiRequest, res: NextApiResponse) {
-  const stream = await OpenAI(
-    "completions",
-    {
-      model: "text-davinci-003",
-      prompt: "Write a happy sentence.\n\n",
-      max_tokens: 25
-    }
-  );
+export default async function test(_: NextApiRequest, res: NextApiResponse) {
+  const stream = await OpenAI("completions", {
+    model: "text-davinci-003",
+    prompt: "Write a happy sentence.\n\n",
+    max_tokens: 25,
+  });
 
   stream.pipe(res);
 }
@@ -134,18 +133,20 @@ For full events, use `mode = "raw"`.
 See: https://platform.openai.com/docs/guides/chat/introduction
 
 ```ts
-const stream = await OpenAI(
-  "chat",
-  {
-    model: "gpt-3.5-turbo",
-    messages: [
-      { "role": "system", "content": "You are a helpful assistant that translates English to French." },
-      { "role": "user", "content": "Translate the following English text to French: \"Hello world!\"" }
-    ],
-  },
-);
+const stream = await OpenAI("chat", {
+  model: "gpt-3.5-turbo",
+  messages: [
+    {
+      role: "system",
+      content: "You are a helpful assistant that translates English to French.",
+    },
+    {
+      role: "user",
+      content: 'Translate the following English text to French: "Hello world!"',
+    },
+  ],
+});
 ```
-
 
 In `tokens` mode, you will just receive the response chunks, which look like this
 (separated with newlines for illustration):
@@ -167,5 +168,5 @@ Use `mode = "raw"` for access to raw events.
 ### Notes
 
 1. Internally, streams are often manipulated using generators via `for await
-   (const chunk of yieldStream(stream)) { ... }`. We recommend following this
+(const chunk of yieldStream(stream)) { ... }`. We recommend following this
    pattern if you find it intuitive.
