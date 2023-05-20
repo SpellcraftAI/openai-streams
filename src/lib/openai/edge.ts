@@ -25,6 +25,8 @@ export const OpenAI: OpenAIEdgeClient = async (
     apiKey = process.env.OPENAI_API_KEY,
     apiHeaders = {},
     controller,
+    onDone,
+    onParse
   } = {}
 ) => {
   if (!apiKey) {
@@ -64,7 +66,7 @@ export const OpenAI: OpenAIEdgeClient = async (
   }
 
   let outputStream: ReadableStream<Uint8Array>;
-  const options = { mode };
+  const options = { mode, onDone, onParse };
 
   if (shouldStream) {
     switch (mode) {

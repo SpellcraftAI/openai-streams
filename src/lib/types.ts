@@ -6,8 +6,7 @@ import type {
   CreateFineTuneRequest,
   CreateImageRequest,
 } from "./pinned";
-
-export type StreamMode = "raw" | "tokens";
+import { OpenAIStreamOptions } from "./streaming";
 
 export const OpenAIAPIEndpoints = {
   chat: "chat/completions",
@@ -35,7 +34,7 @@ export type OpenAICreateArgs<T extends OpenAIAPIEndpoint> =
               ? CreateChatCompletionRequest
               : never;
 
-export type OpenAIOptions = {
+export interface OpenAIOptions extends OpenAIStreamOptions {
   /**
    * By default, the API base is https://api.openai.com/v1, corresponding
    * to OpenAIs API. You can override this to use a different provider or proxy.
@@ -52,15 +51,11 @@ export type OpenAIOptions = {
    */
   apiHeaders?: Record<string, string>;
   /**
-   * Whether to return tokens or raw events.
-   */
-  mode?: StreamMode;
-  /**
    * An optional AbortController, which can be used to abort the request
    * mid-flight.
    */
   controller?: AbortController;
-};
+}
 
 /**
  * The OpenAI API client for Edge runtime.
