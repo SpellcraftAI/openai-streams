@@ -1,6 +1,8 @@
-name: Test commit
+name: Test changes
 
-on: push
+on:
+  - push
+  - pull_request_target
 
 env:
   GITHUB_TOKEN: ${{ secrets.OVERRIDE_GITHUB_TOKEN }}
@@ -20,8 +22,8 @@ jobs:
         ]
         os: [
           ubuntu-latest, 
-          macos-latest
-          # windows-latest,
+          macos-latest,
+          windows-latest,
         ]
     steps:
 
