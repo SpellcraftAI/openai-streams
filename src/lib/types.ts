@@ -60,6 +60,16 @@ export type OpenAIOptions = {
    * mid-flight.
    */
   controller?: AbortController;
+  /**
+   * A function to run at the end of a stream. This is useful if you want
+   * to do something with the stream after it's done, like log token usage.
+   */
+  onDone?: () => Promise<void>;
+  /**
+   * A function that runs for each token. This is useful if you want
+   * to sum tokens used as they're returned.
+   */
+  onParse?: (token: string) => void;
 };
 
 /**
