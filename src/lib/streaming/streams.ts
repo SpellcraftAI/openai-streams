@@ -4,13 +4,26 @@ import { ChatParser, TokenParser } from "./transforms";
 import { createParser } from "eventsource-parser";
 import { Transform, pipeline, yieldStream } from "yield-stream";
 import { OpenAIError } from "../errors";
-import { StreamMode } from "../types";
 
-export type OpenAIStreamOptions = {
-  mode: StreamMode;
-  onDone?: () => Promise<void>;
-  onParse?: (token: string) => void;
-};
+export type StreamMode = "raw" | "tokens";
+
+export interface OpenAIStreamOptions {
+  /**
+   * Whether to return tokens or raw events.
+   */
+  mode?: StreamMode;
+
+  /**
+   * A function to run at the end of a stream. This is useful if you want
+   * to do something with the stream after it's done, like log token usage.
+   */
+  onDone?: () => void | Promise<void>;
+  /**
+   * A function that runs for each token. This is useful if you want
+   * to sum tokens used as they're returned.
+   */
+  onParse?: (token: string) => void | Promise<void>;
+}
 
 export type OpenAIStream = (
   stream: ReadableStream<Uint8Array>,
@@ -36,7 +49,11 @@ export const EventStream: OpenAIStream = (
            * Break if event stream finished.
            */
           if (data === "[DONE]") {
-            controller.close();
+            const controllerIsClosed = controller.desiredSize === null;
+            if (!controllerIsClosed) {
+              controller.close();
+            }
+
             await onDone?.();
             return;
           }
@@ -91,7 +108,7 @@ export const EventStream: OpenAIStream = (
  * Creates a handler that decodes the given stream into a string,
  * then pipes that string into the provided callback.
  */
-const CallbackHandler = function(onParse?: (token: string) => void) {
+const CallbackHandler = ({ onParse }: OpenAIStreamOptions) => {
   const handler: Transform  = async function* (chunk) {
     const decoded = DECODER.decode(chunk);
     onParse?.(decoded);
@@ -99,6 +116,7 @@ const CallbackHandler = function(onParse?: (token: string) => void) {
       yield ENCODER.encode(decoded);
     }
   };
+
   return handler;
 };
 
@@ -112,7 +130,7 @@ export const TokenStream: OpenAIStream = (
   return pipeline(
     EventStream(stream, options),
     TokenParser,
-    CallbackHandler(options.onParse)
+    CallbackHandler(options)
   );
 };
 
@@ -126,6 +144,6 @@ export const ChatStream: OpenAIStream = (
   return pipeline(
     EventStream(stream, options),
     ChatParser,
-    CallbackHandler(options.onParse)
+    CallbackHandler(options)
   );
 };
