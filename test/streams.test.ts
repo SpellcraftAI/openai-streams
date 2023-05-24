@@ -49,8 +49,8 @@ test.serial("mode = 'raw': error handling", async (t) => {
     "completions",
     {
       model: "text-davinci-003",
-      prompt: "Write a short sentence.",
-      max_tokens: 5,
+      prompt: "Write a long sentence.",
+      max_tokens: 1,
     },
     { mode: "raw" }
   );
