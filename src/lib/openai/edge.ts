@@ -1,14 +1,16 @@
 /* eslint-disable no-console */
 import { streamArray } from "yield-stream";
+
+import { OpenAIAPIEndpoints, OpenAIEdgeClient } from "../types";
 import { ENCODER } from "../../globs/shared";
 import { OpenAIError } from "../errors";
+import { fetchWithBackoff } from "../backoff";
 import {
   ChatStream,
   EventStream,
   getTokensFromResponse,
   TokenStream,
 } from "../streaming";
-import { OpenAIAPIEndpoints, OpenAIEdgeClient } from "../types";
 
 /**
  * OpenAI Edge client.
@@ -35,7 +37,7 @@ export const OpenAI: OpenAIEdgeClient = async (
 
   const shouldStream = endpoint === "completions" || endpoint === "chat";
   const path = OpenAIAPIEndpoints[endpoint];
-  const response = await fetch(`${apiBase}/${path}`, {
+  const response = await fetchWithBackoff(`${apiBase}/${path}`, {
     method: "POST",
     body: JSON.stringify({
       ...args,
