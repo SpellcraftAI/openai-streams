@@ -1,6 +1,6 @@
 # OpenAI Streams
 
-[**Github**](https://github.com/SpellcraftAI/openai-streams) |
+[**GitHub**](https://github.com/SpellcraftAI/openai-streams) |
 [**NPM**](https://npmjs.com/package/openai-streams) |
 [**Docs**](https://openai-streams.vercel.app)
 
