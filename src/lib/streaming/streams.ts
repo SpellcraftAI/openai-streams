@@ -3,6 +3,7 @@ import { ChatParser, TokenParser } from "./transforms";
 
 import { createParser } from "eventsource-parser";
 import { Transform, pipeline, yieldStream } from "yield-stream";
+import { yieldStream as yieldStreamNode } from "yield-stream/node";
 import { OpenAIError } from "../errors";
 
 export type StreamMode = "raw" | "tokens";
@@ -26,7 +27,7 @@ export interface OpenAIStreamOptions {
 }
 
 export type OpenAIStream = (
-  stream: ReadableStream<Uint8Array>,
+  stream: NodeJS.ReadableStream | ReadableStream<Uint8Array>,
   options: OpenAIStreamOptions
 ) => ReadableStream<Uint8Array>;
 
@@ -85,11 +86,18 @@ export const EventStream: OpenAIStream = (
           }
         }
       });
+
+      // Check if the stream is a NodeJS stream or a browser stream.
+      // @ts-ignore
+      const isNodeJsStream = typeof stream.pipe === 'function';
+
       /**
        * Feed the parser with decoded chunks from the raw stream.
        */
-      for await (const chunk of yieldStream(stream)) {
-        const decoded = DECODER.decode(chunk);
+      for await (const chunk of isNodeJsStream
+        ? yieldStreamNode(stream as NodeJS.ReadableStream)
+        : yieldStream(stream as ReadableStream<Uint8Array>)) {
+        const decoded = DECODER.decode(chunk as any);
 
         try {
           const parsed = JSON.parse(decoded);

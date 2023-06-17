@@ -9,6 +9,8 @@ import type {
 
 import { OpenAIStreamOptions } from "./streaming";
 
+import nodeFetch from "node-fetch";
+
 export const OpenAIAPIEndpoints = {
   chat: "chat/completions",
   completions: "completions",
@@ -60,7 +62,7 @@ export interface OpenAIOptions extends OpenAIStreamOptions {
    * An optional fetch implementation, which can be used to replace the default global fetch call used for making
    * API requests. This is useful in environments like node where a global fetch is not provided by default.
    */
-  fetch?: typeof fetch;
+  fetch?: typeof fetch | typeof nodeFetch;
 }
 
 /**
