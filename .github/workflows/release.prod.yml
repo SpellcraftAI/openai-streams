@@ -76,4 +76,4 @@ jobs:
       run: pnpm cjs
 
     - name: Test & Release (CJS)
-      run: npx release-it --no-git --github.release false --preRelease=cjs --ci --VV
+      run: npm version prerelease --no-git-tag-version && npm publish --tag cjs
