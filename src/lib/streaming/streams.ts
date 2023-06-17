@@ -95,8 +95,9 @@ export const EventStream: OpenAIStream = (
        * Feed the parser with decoded chunks from the raw stream.
        */
       for await (const chunk of isNodeJsStream
-        ? yieldStreamNode<Uint8Array>(stream as NodeJS.ReadableStream)
-        : yieldStream(stream as ReadableStream<Uint8Array>)) {
+        ? yieldStreamNode<Buffer>(stream as NodeJS.ReadableStream)
+        : yieldStream(stream as ReadableStream<Uint8Array>)
+      ) {
         const decoded = DECODER.decode(chunk);
 
         try {
