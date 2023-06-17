@@ -28,7 +28,8 @@ export const OpenAI: OpenAIEdgeClient = async (
     apiHeaders = {},
     controller,
     onDone,
-    onParse
+    onParse,
+    fetch
   } = {}
 ) => {
   if (!apiKey) {
@@ -50,7 +51,7 @@ export const OpenAI: OpenAIEdgeClient = async (
       ...apiHeaders,
     },
     signal: controller?.signal,
-  });
+  }, fetch);
 
   switch (response.status) {
     case 401:

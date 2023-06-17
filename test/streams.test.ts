@@ -5,6 +5,7 @@ import test from "ava";
 import { OpenAI } from "../src";
 import { yieldStream } from "yield-stream";
 import { DECODER } from "../src/globs/shared";
+import nodeFetch from "node-fetch";
 
 test.serial("'completions' endpoint", async (t) => {
   const stream = await OpenAI("completions", {
@@ -236,4 +237,29 @@ test.serial("cancelling streams", async (t) => {
   }
 
   t.is(i, 5, "Stream should have been cancelled after 5 chunks.");
+});
+
+test.serial("should work with custom fetch", async (t) => {
+  let didUseMock = false;
+
+  const mockFetch: typeof nodeFetch = (...params) => {
+    didUseMock = true;
+    return nodeFetch(...params);
+  };
+
+  const stream = await OpenAI("chat", {
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      { role: "user", content: "This is a test message, say hello!" },
+    ],
+  }, { fetch: mockFetch });
+
+  const DECODER = new TextDecoder();
+  for await (const serialized of yieldStream(stream)) {
+    const string = DECODER.decode(serialized);
+    console.log(string);
+  }
+
+  t.true(didUseMock, "Did not use custom fetch.");
 });
