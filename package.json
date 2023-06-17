@@ -13,8 +13,7 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "node.js",
-    "node.d.ts"
+    "./node.*"
   ],
   "exports": {
     "./package.json": "./package.json",
