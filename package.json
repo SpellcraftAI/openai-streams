@@ -20,8 +20,14 @@
       "import": "./node.js",
       "require": "./node.cjs"
     },
-    ".": "./dist/index.js",
-    "./*": "./dist/*/index.js"
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./*": {
+      "import": "./dist/*/index.js",
+      "require": "./dist/*/index.cjs"
+    }
   },
   "scripts": {
     "dev": "tsmodule dev",
