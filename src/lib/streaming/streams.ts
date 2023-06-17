@@ -88,8 +88,8 @@ export const EventStream: OpenAIStream = (
       });
 
       // Check if the stream is a NodeJS stream or a browser stream.
-      // @ts-ignore
-      const isNodeJsStream = typeof stream.pipe === 'function';
+      // @ts-ignore - TS doesn't know about `pipe` on streams.
+      const isNodeJsStream = typeof stream.pipe === "function";
 
       /**
        * Feed the parser with decoded chunks from the raw stream.
