@@ -26,9 +26,9 @@
     "dev": "tsmodule dev",
     "export-docs": "pnpm typedoc src",
     "export": "tsmodule build",
+    "cjs": "tsmodule build -f cjs",
     "build": "pnpm export && pnpm export-docs",
-    "test": "pnpm export && ava",
-    "retest": "ava",
+    "test": "ava",
     "prepublishOnly": "pnpm test",
     "lint": "eslint src --fix"
   },

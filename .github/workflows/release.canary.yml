@@ -65,6 +65,15 @@ jobs:
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+  
+    - name: Build (ESM)
+      run: pnpm build
 
-    - name: Test Production Bundle & Release
+    - name: Test & Release (ESM)
       run: npx release-it --preRelease=canary --ci -VV
+
+    - name: Build (CJS)
+      run: pnpm cjs
+
+    - name: Test & Release (CJS)
+      run: npx release-it --no-git --preRelease=cjs --github.release --ci --VV
