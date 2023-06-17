@@ -9,7 +9,7 @@ const globalFetch = typeof fetch === "undefined" ? undefined : fetch;
 export const fetchWithBackoff = async (
   input: RequestInfo,
   init?: RequestInit,
-  fetch?: typeof globalFetch,
+  fetch = globalFetch,
   { delay, maxRetries }: BackoffOptions = {
     delay: 500,
     maxRetries: 7
@@ -17,7 +17,7 @@ export const fetchWithBackoff = async (
 ) => {
   for (let i = 0; i <= maxRetries; i++) {
     try {
-      const response = await (fetch || globalFetch!)(input, init);
+      const response = await (fetch!)(input, init);
 
       if (!response.ok) {
         const errorData = await response.json();
