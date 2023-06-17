@@ -242,9 +242,9 @@ test.serial("cancelling streams", async (t) => {
 test.serial("should work with custom fetch", async (t) => {
   let didUseMock = false;
 
-  const mockFetch: typeof nodeFetch = (url, init?) => { 
+  const mockFetch: typeof nodeFetch = (...params) => { 
     didUseMock = true;
-    return nodeFetch(url, init);
+    return nodeFetch(...params);
   }
 
   const stream = await OpenAI("chat", {
