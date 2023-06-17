@@ -56,6 +56,11 @@ export interface OpenAIOptions extends OpenAIStreamOptions {
    * mid-flight.
    */
   controller?: AbortController;
+  /**
+   * An optional fetch implementation, which can be used to replace the default global fetch call used for making
+   * API requests. This is useful in environments like node where a global fetch is not provided by default.
+   */
+  fetch?: typeof fetch;
 }
 
 /**
