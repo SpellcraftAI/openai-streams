@@ -18,7 +18,10 @@
   ],
   "exports": {
     "./package.json": "./package.json",
-    "./node": "./node.js",
+    "./node": {
+      "import": "./node.js",
+      "require": "./node.cjs"
+    },
     ".": "./dist/index.js",
     "./*": "./dist/*/index.js"
   },
@@ -26,7 +29,7 @@
     "dev": "tsmodule dev",
     "export-docs": "pnpm typedoc src",
     "export": "tsmodule build",
-    "cjs": "tsmodule build -f cjs",
+    "cjs": "tsmodule build -b -f cjs",
     "build": "pnpm export && pnpm export-docs",
     "test": "ava",
     "prepublishOnly": "pnpm test",
