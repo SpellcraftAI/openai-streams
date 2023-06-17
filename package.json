@@ -5,7 +5,6 @@
   "homepage": "https://github.com/SpellcraftAI/openai-streams",
   "version": "5.13.0",
   "license": "MIT",
-  "type": "module",
   "platform": "node",
   "engines": {
     "node": ">=14"
