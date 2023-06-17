@@ -17,7 +17,11 @@ export const fetchWithBackoff = async (
 ) => {
   for (let i = 0; i <= maxRetries; i++) {
     try {
-      const response = await (fetch!)(input, init);
+      if (!fetch) {
+        throw new Error("No fetch implementation.");
+      }
+
+      const response = await fetch(input, init);
 
       if (!response.ok) {
         const errorData = await response.json();
