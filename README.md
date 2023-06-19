@@ -165,6 +165,18 @@ Hello
 
 Use `mode = "raw"` for access to raw events.
 
+#### With Proxy Agent
+
+Due to the fact that the `fetch()` API in Node.js uses the [`undici`](https://www.npmjs.com/package/undici) module at its core, setting a proxy for it requires installing the [`undici`](https://www.npmjs.com/package/undici) dependency and then using `setGlobalDispatcher` to configure it.
+
+See: https://github.com/gajus/global-agent/issues/52
+
+```ts
+import { ProxyAgent, setGlobalDispatcher } from 'undici'
+
+setGlobalDispatcher(new ProxyAgent(process.env.HTTP_PROXY))
+```
+
 ### Notes
 
 1. Internally, streams are often manipulated using generators via `for await
