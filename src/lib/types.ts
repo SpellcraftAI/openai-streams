@@ -59,8 +59,9 @@ export interface OpenAIOptions extends OpenAIStreamOptions {
    */
   controller?: AbortController;
   /**
-   * An optional custom fetch implementation, which will be used to replace the default fetch/node-fetch
-   * call used for making API requests in edge/dom and node environments respectively.
+   * An optional custom fetch implementation, which will be used to replace the
+   * default fetch/node-fetch call used for making API requests in edge/dom and
+   * node environments respectively.
    */
   fetch?: typeof fetch | typeof nodeFetch;
 }
