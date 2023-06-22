@@ -18,16 +18,14 @@ export const fetchWithBackoff = async (
     maxRetries: 7
   }
 ) => {
-  let _fetch: Fetch | undefined = fetch;
-
-  if (!_fetch) {
+  if (!fetch) {
     const { default: nodeFetch } = await import("node-fetch");
-    _fetch = nodeFetch;
+    fetch = nodeFetch;
   }
 
   for (let i = 0; i <= maxRetries; i++) {
     try {
-      const response = await _fetch(input, init);
+      const response = await fetch(input, init);
 
       if (!response.ok) {
         const errorData = await response.json();
