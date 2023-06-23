@@ -12,15 +12,14 @@ export interface BackoffOptions {
 export const fetchWithBackoff = async (
   input: RequestInfo & NodeFetchRequestInfo,
   init?: RequestInit & NodeFetchRequestInit,
-  fetch?: Fetch,
+  fetch: Fetch = globalThis.fetch,
   { delay, maxRetries }: BackoffOptions = {
     delay: 500,
     maxRetries: 7
   }
 ) => {
   if (!fetch) {
-    const { default: nodeFetch } = await import("node-fetch");
-    fetch = nodeFetch;
+    throw new Error("No fetch implementation found.");
   }
 
   for (let i = 0; i <= maxRetries; i++) {
