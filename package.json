@@ -47,13 +47,13 @@
     "ava": "^5.2.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.41.0",
+    "node-fetch": "^3.3.1",
     "openai": "^3.3.0",
     "typedoc": "^0.24.7",
     "typescript": "^5.0.4"
   },
   "dependencies": {
     "eventsource-parser": "^1.0.0",
-    "node-fetch": "^3.3.1",
     "yield-stream": "^3.0.0"
   },
   "keywords": [
